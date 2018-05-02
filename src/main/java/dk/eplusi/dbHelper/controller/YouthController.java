@@ -1,6 +1,9 @@
 package dk.eplusi.dbHelper.controller;
 
+import dk.eplusi.dbHelper.dao.OccDao;
+import dk.eplusi.dbHelper.dao.OccTypeDao;
 import dk.eplusi.dbHelper.dao.YouthDao;
+import dk.eplusi.dbHelper.model.code.Occ;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +43,22 @@ public class YouthController {
         return value == 0 ? "아니오" : "예";
     }
 
+    private static boolean convertIntToBoolean(Integer value) {
+        if(value == null)
+            return false;
+
+        return value != 0;
+    }
+
     private final YouthDao youthDao;
+    private final OccTypeDao occTypeDao;
+    private final OccDao occDao;
 
     @Autowired
-    public YouthController(YouthDao youthDao) {
+    public YouthController(YouthDao youthDao, OccTypeDao occTypeDao, OccDao occDao) {
         this.youthDao = youthDao;
+        this.occTypeDao = occTypeDao;
+        this.occDao = occDao;
     }
 
     //TODO 청년 정보 입력 페이지 생성
@@ -55,15 +69,65 @@ public class YouthController {
     }
 
     //TODO 청년 정보 수정 페이지 생성
-    @PostMapping(value = "youthInsert")
+    @PostMapping(value = "youthModify")
     public String youthModify(HttpServletRequest request, Model model) throws Exception {
+        Integer youthId = Integer.valueOf(request.getParameter("youthId"));
+        Optional<Youth> result = youthDao.findById(youthId);
+        if(result.isPresent()) {
+            Youth youth = result.get();
+            model.addAttribute("youthId", youthId);
+            model.addAttribute("youthName", youth.getYouthName());
+            model.addAttribute("youthPeer", youth.getYouthPeer());
+            if(youth.getGender() != null)
+                model.addAttribute("isMale", youth.getGender().equals('M'));
+            model.addAttribute("birthDate", youth.getBirthDate());
+            model.addAttribute("cellPhone", youth.getCellPhone());
+            model.addAttribute("homeAddress", youth.getHomeAddress());
+            model.addAttribute("isBornChr", convertIntToMsg(youth.getIsBornChr()));
+            model.addAttribute("isSelfIn", convertIntToMsg(youth.getIsSelfIn()));
+            model.addAttribute("guideName", youth.getGuideName());
+            if(youth.getOccType() != null)
+                model.addAttribute("occType", youth.getOccType().getOccType());
+            if(youth.getOcc() != null)
+                model.addAttribute("occ", youth.getOcc().getOccName());
+            if(youth.getBizType() != null)
+                model.addAttribute("bizType", youth.getBizType().getBizType());
+            if(youth.getReligionType() != null)
+                model.addAttribute("religionType", youth.getReligionType().getReligionType());
+            model.addAttribute("churchRegDate", youth.getChurchRegDate());
+            model.addAttribute("isAttending", convertIntToMsg(youth.getIsAttending()));
+            model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
+
+            List<Map<String, Object>> occTypeList = new ArrayList<>();
+            occTypeDao.findAll().forEach(occType -> {
+                Map<String, Object> occTypeMap = new HashMap<>();
+                occTypeMap.put("key", occType.getOccTypeCode());
+                occTypeMap.put("value", occType.getOccType());
+                occTypeList.add(occTypeMap);
+            });
+            model.addAttribute("occTypeList", occTypeList);
+
+            List<Map<String, Object>> occList = new ArrayList<>();
+            occDao.findAll().forEach(occ -> {
+                Map<String, Object> occMap = new HashMap<>();
+                occMap.put("key", occType.getOccCode());
+                occMap.put("value", occType.getOcc());
+                occList.add(occMap);
+            });
+            model.addAttribute("occTypeList", occList);
+        }
+
+        return "youth/youthModify";
+    }
+
+    @PostMapping(value = "youthModifyResult")
+    public String youthModifyResult(HttpServletRequest request, Model model) throws Exception {
 
         return "youth/youthModify";
     }
 
     @GetMapping(value = "youthDetail")
     public String youthDetail(HttpServletRequest request, Model model) throws Exception {
-
         Integer youthId = Integer.valueOf(request.getParameter("youthId"));
 
         Optional<Youth> result = youthDao.findById(youthId);
@@ -88,7 +152,7 @@ public class YouthController {
             if(youth.getOccType() != null)
                 model.addAttribute("occType", youth.getOccType().getOccType());
             if(youth.getOcc() != null)
-            model.addAttribute("occ", youth.getOcc().getOccName());
+                model.addAttribute("occ", youth.getOcc().getOccName());
             if(youth.getBizType() != null)
                 model.addAttribute("bizType", youth.getBizType().getBizType());
             if(youth.getReligionType() != null)

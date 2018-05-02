@@ -6,7 +6,7 @@
 <h3>청년 - 상세 정보 수정</h3>
 <a href="#" onclick="location.href=document.referrer">이전 페이지로</a>
 <hr>
-{{#if found}}
+<form action="youthModifyResult">
     <table border="1" cellpadding="1">
         <tr>
             <td><b>항목</b></td>
@@ -14,71 +14,114 @@
         </tr>
         <tr>
             <td>청년 이름</td>
-            <td>{{youthName}}</td>
+            <td><input type="text" name="youthName" value="{{youthName}}"></td>
         </tr>
         <tr>
             <td>청년 또래</td>
-            <td>{{youthPeer}}</td>
+            <td><input type="text" name="youthPeer" value="{{youthPeer}}"></td>
         </tr>
         <tr>
             <td>성별</td>
-            <td>{{gender}}</td>
+            {{#if isMale}}
+                <td><input type="radio" name="gender" value="male" checked="checked">남 <input type="radio" name="isBornChr" value="female">여</td>
+            {{else}}
+                <td><input type="radio" name="gender" value="male">남 <input type="radio" name="isBornChr" value="female" checked="checked">여</td>
+            {{/if}}
         </tr>
         <tr>
             <td>생년월일</td>
-            <td>{{birthDate}}</td>
+            <td><input type="text" name="birthDate" value={{birthDate}}></td>
         </tr>
         <tr>
             <td>핸드폰 번호</td>
-            <td>{{cellPhone}}</td>
+            <td><input type="text" name="cellPhone" value={{cellPhone}}></td>
         </tr>
         <tr>
             <td>자택주소</td>
-            <td>{{homeAddress}}</td>
+            <td><input type="text" name="homeAddress" value={{homeAddress}}></td>
         </tr>
         <tr>
             <td>모태신앙여부</td>
-            <td>{{isBornChr}}</td>
+            {{#if isBornChr}}
+                <td><input type="radio" name="isBornChr" value="true" checked="checked">예 <input type="radio" name="isBornChr" value="false">아니오</td>
+            {{else}}
+                <td><input type="radio" name="isBornChr" value="true">예 <input type="radio" name="isBornChr" value="false" checked="checked">아니오</td>
+            {{/if}}
         </tr>
         <tr>
             <td>자진등록여부</td>
-            <td>{{isSelfIn}}</td>
+            {{#if isSelfIn}}
+                <td><input type="radio" name="isSelfIn" value="true" checked="checked">예 <input type="radio" name="isSelfIn" value="false">아니오</td>
+            {{else}}
+                <td><input type="radio" name="isSelfIn" value="true">예 <input type="radio" name="isSelfIn" value="false" checked="checked">아니오</td>
+            {{/if}}
         </tr>
         <tr>
             <td>인도자 성명</td>
-            <td>{{guideName}}</td>
+            <td><input type="text" name="guideName" value={{guideName}}></td>
         </tr>
         <tr>
             <td>직업 상태</td>
-            <td>{{occType}}</td>
+            <td>
+                <select>
+                    {{#each occTypeList}}
+                        <option name="occType" value="{{key}}">{{value}}</option>
+                    {{/each}}
+                </select>
+            </td>
         </tr>
         <tr>
             <td>직업</td>
-            <td>{{occ}}</td>
+            <td>
+                <select>
+                    {{#each occList}}
+                        <option name="occ" value="{{key}}">{{value}}</option>
+                    {{/each}}
+                </select>
+            </td>
         </tr>
         <tr>
             <td>직군</td>
-            <td>{{bizType}}</td>
+            <td>
+                <select>
+                    {{#each bizTypeList}}
+                        <option name="bizType" value="{{key}}">{{value}}</option>
+                    {{/each}}
+                </select>
+            </td>
         </tr>
         <tr>
             <td>신급</td>
-            <td>{{religionType}}</td>
+            <td>
+                <select>
+                    {{#each religionTypeList}}
+                        <option name="religionType" value="{{key}}">{{value}}</option>
+                    {{/each}}
+                </select>
+            </td>
         </tr>
         <tr>
             <td>교회 등록 날짜</td>
-            <td>{{churchRegDate}}</td>
+            <td><input type="text" name="churchRegDate" value={{churchRegDate}}></td>
         </tr>
         <tr>
             <td>출석 상태</td>
-            <td>{{isAttending}}</td>
+            {{#if isAttending}}
+                <td><input type="radio" name="isAttending" value="true" checked="checked">예 <input type="radio" name="isAttending" value="false">아니오</td>
+            {{else}}
+                <td><input type="radio" name="isAttending" value="true">예 <input type="radio" name="isAttending" value="false" checked="checked">아니오</td>
+            {{/if}}
         </tr>
         <tr>
             <td>등록 여부</td>
-            <td>{{isRegistered}}</td>
+            {{#if isRegistered}}
+                <td><input type="radio" name="isRegistered" value="true" checked="checked">예 <input type="radio" name="isRegistered" value="false">아니오</td>
+            {{else}}
+                <td><input type="radio" name="isRegistered" value="true">예 <input type="radio" name="isRegistered" value="false" checked="checked">아니오</td>
+            {{/if}}
         </tr>
     </table>
-{{else}}
-    해당 청년을 찾을 수 없습니다.<br>
-{{/if}}
+    <input type="submit" value="저장">
+</form>
 </body>
 </html>

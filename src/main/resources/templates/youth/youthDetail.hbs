@@ -1,0 +1,88 @@
+<html>
+<head>
+    <title>DK E+I - DB Helper</title>
+</head>
+<body>
+<h3>청년 - 상세 정보</h3>
+<a href="#" onclick="location.href=document.referrer">이전 페이지로</a>
+<hr>
+{{#if found}}
+    <table border="1" cellpadding="1">
+        <tr>
+            <td><b>항목</b></td>
+            <td><b>내용</b></td>
+        </tr>
+        <tr>
+            <td>청년 이름</td>
+            <td>{{youthName}}</td>
+        </tr>
+        <tr>
+            <td>청년 또래</td>
+            <td>{{youthPeer}}</td>
+        </tr>
+        <tr>
+            <td>성별</td>
+            <td>{{gender}}</td>
+        </tr>
+        <tr>
+            <td>생년월일</td>
+            <td>{{birthDate}}</td>
+        </tr>
+        <tr>
+            <td>핸드폰 번호</td>
+            <td>{{cellPhone}}</td>
+        </tr>
+        <tr>
+            <td>자택주소</td>
+            <td>{{homeAddress}}</td>
+        </tr>
+        <tr>
+            <td>모태신앙여부</td>
+            <td>{{isBornChr}}</td>
+        </tr>
+        <tr>
+            <td>자진등록여부</td>
+            <td>{{isSelfIn}}</td>
+        </tr>
+        <tr>
+            <td>인도자 성명</td>
+            <td>{{guideName}}</td>
+        </tr>
+        <tr>
+            <td>직업 상태</td>
+            <td>{{occType}}</td>
+        </tr>
+        <tr>
+            <td>직업</td>
+            <td>{{occ}}</td>
+        </tr>
+        <tr>
+            <td>직군</td>
+            <td>{{bizType}}</td>
+        </tr>
+        <tr>
+            <td>신급</td>
+            <td>{{religionType}}</td>
+        </tr>
+        <tr>
+            <td>교회 등록 날짜</td>
+            <td>{{churchRegDate}}</td>
+        </tr>
+        <tr>
+            <td>출석 상태</td>
+            <td>{{isAttending}}</td>
+        </tr>
+        <tr>
+            <td>등록 여부</td>
+            <td>{{isRegistered}}</td>
+        </tr>
+    </table>
+    <form method="post" action="youthModify">
+        <input type="submit" name="modifySubmit" value="상세 정보 수정">
+        <input type="hidden" value="{{youthId}}">
+    </form>
+{{else}}
+    해당 청년을 찾을 수 없습니다.<br>
+{{/if}}
+</body>
+</html>

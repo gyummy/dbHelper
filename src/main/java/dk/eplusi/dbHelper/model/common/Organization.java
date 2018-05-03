@@ -15,7 +15,7 @@ public class Organization {
 
     @Id
     @Column(name = "org_code")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orgCode;
     @Column(name = "parent_code")
     private Integer parentCode;
@@ -58,5 +58,20 @@ public class Organization {
 
     public void setAppliedYear(Date appliedYear) {
         this.appliedYear = appliedYear;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Organization that = (Organization) o;
+
+        return getOrgCode() != null ? getOrgCode().equals(that.getOrgCode()) : that.getOrgCode() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getOrgCode() != null ? getOrgCode().hashCode() : 0;
     }
 }

@@ -19,7 +19,7 @@ public class Youth {
 
     @Id
     @Column(name = "youth_id")
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer youthId;
     @Column(name = "youth_name")
     private String youthName;
@@ -40,16 +40,16 @@ public class Youth {
     private Integer isSelfIn;
     @Column(name = "guide_name")
     private String guideName;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = OccType.class)
     @JoinColumn(name = "occ_type_code")
     private OccType occType;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Occ.class)
     @JoinColumn(name = "occ_code")
     private Occ occ;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = BizType.class)
     @JoinColumn(name = "biz_type_code")
     private BizType bizType;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = ReligionType.class)
     @JoinColumn(name = "religion_type_code")
     private ReligionType religionType;
     @Temporal(TemporalType.DATE)
@@ -63,7 +63,7 @@ public class Youth {
     @Column(name = "update_time")
     private Date updateTime;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "create_time")
+    @Column(name = "create_time", insertable = false)
     private Date createTime;
 
     public Youth() {
@@ -223,5 +223,20 @@ public class Youth {
 
     public static String getIdColumnName() {
         return "youth_id";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Youth youth = (Youth) o;
+
+        return getYouthId().equals(youth.getYouthId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getYouthId().hashCode();
     }
 }

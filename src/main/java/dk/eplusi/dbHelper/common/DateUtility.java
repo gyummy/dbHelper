@@ -18,4 +18,7 @@ public class DateUtility {
         return new Date(time);
     }
 
+    public static Date parse(String dateString) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+    }
 }

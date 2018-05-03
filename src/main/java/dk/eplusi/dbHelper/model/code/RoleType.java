@@ -14,7 +14,7 @@ public class RoleType {
 
     @Id
     @Column(name = "role_code")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roleCode;
     @Column(name = "role_name")
     private String roleName;
@@ -36,5 +36,20 @@ public class RoleType {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RoleType roleType = (RoleType) o;
+
+        return getRoleCode() != null ? getRoleCode().equals(roleType.getRoleCode()) : roleType.getRoleCode() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getRoleCode() != null ? getRoleCode().hashCode() : 0;
     }
 }

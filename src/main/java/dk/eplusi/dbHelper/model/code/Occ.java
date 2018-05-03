@@ -15,7 +15,7 @@ public class Occ {
 
     @Id
     @Column(name = "occ_code")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer occCode;
     @Column(name = "occ_name")
     private String occName;
@@ -69,5 +69,20 @@ public class Occ {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Occ occ = (Occ) o;
+
+        return getOccCode() != null ? getOccCode().equals(occ.getOccCode()) : occ.getOccCode() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getOccCode() != null ? getOccCode().hashCode() : 0;
     }
 }

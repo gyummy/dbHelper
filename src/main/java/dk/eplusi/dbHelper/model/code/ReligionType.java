@@ -14,7 +14,7 @@ public class ReligionType {
 
     @Id
     @Column(name = "religion_type_code")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer religionTypeCode;
     @Column(name = "religion_type")
     private String religionType;
@@ -36,5 +36,20 @@ public class ReligionType {
 
     public void setReligionType(String religionType) {
         this.religionType = religionType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReligionType that = (ReligionType) o;
+
+        return getReligionTypeCode() != null ? getReligionTypeCode().equals(that.getReligionTypeCode()) : that.getReligionTypeCode() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getReligionTypeCode() != null ? getReligionTypeCode().hashCode() : 0;
     }
 }

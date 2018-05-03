@@ -14,7 +14,7 @@ public class OccType {
 
     @Id
     @Column(name = "occ_type_code")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer occTypeCode;
     @Column(name = "occ_type")
     private String occType;
@@ -36,5 +36,20 @@ public class OccType {
 
     public void setOccType(String occType) {
         this.occType = occType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OccType occType = (OccType) o;
+
+        return getOccTypeCode() != null ? getOccTypeCode().equals(occType.getOccTypeCode()) : occType.getOccTypeCode() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getOccTypeCode() != null ? getOccTypeCode().hashCode() : 0;
     }
 }

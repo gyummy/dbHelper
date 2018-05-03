@@ -15,7 +15,7 @@ public class BizType {
 
     @Id
     @Column(name = "biz_type_code")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bizTypeCode;
     @Column(name = "biz_type")
     private String bizType;
@@ -59,5 +59,20 @@ public class BizType {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BizType bizType = (BizType) o;
+
+        return getBizTypeCode() != null ? getBizTypeCode().equals(bizType.getBizTypeCode()) : bizType.getBizTypeCode() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getBizTypeCode() != null ? getBizTypeCode().hashCode() : 0;
     }
 }

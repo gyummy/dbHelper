@@ -17,7 +17,7 @@ public class YouthOrg {
 
     @Id
     @Column(name = "youth_org_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer youthOrgId;
     @ManyToOne(targetEntity = Youth.class)
     @JoinColumn(name = "youth_id")
@@ -88,5 +88,20 @@ public class YouthOrg {
 
     public static String getIdColumnName() {
         return "youth_org_id";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        YouthOrg youthOrg = (YouthOrg) o;
+
+        return getYouthOrgId().equals(youthOrg.getYouthOrgId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getYouthOrgId().hashCode();
     }
 }

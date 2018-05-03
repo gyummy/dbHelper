@@ -1,9 +1,9 @@
 package dk.eplusi.dbHelper.controller;
 
-import dk.eplusi.dbHelper.dao.OccDao;
-import dk.eplusi.dbHelper.dao.OccTypeDao;
-import dk.eplusi.dbHelper.dao.YouthDao;
+import dk.eplusi.dbHelper.common.DateUtility;
+import dk.eplusi.dbHelper.dao.*;
 import dk.eplusi.dbHelper.model.code.Occ;
+import dk.eplusi.dbHelper.model.code.ReligionType;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -36,39 +38,133 @@ public class YouthController {
         keywordMap.put("cell_phone", "핸드폰 번호");
     }
 
-    private static String convertIntToMsg(Integer value) {
+    private String convertIntToMsg(Integer value) {
         if(value == null)
             return "";
 
         return value == 0 ? "아니오" : "예";
     }
 
-    private static boolean convertIntToBoolean(Integer value) {
-        if(value == null)
-            return false;
+    private Model addYouthDetailToModel(Youth youth, Model model) {
+        model.addAttribute("youthId", youth.getYouthId());
+        model.addAttribute("youthName", youth.getYouthName());
+        model.addAttribute("youthPeer", youth.getYouthPeer());
+        if(youth.getGender() != null) {
+            if (youth.getGender().equals('M'))
+                model.addAttribute("gender", "남");
+            else
+                model.addAttribute("gender", "여");
+        }
+        model.addAttribute("birthDate", youth.getBirthDate());
+        model.addAttribute("cellPhone", youth.getCellPhone());
+        model.addAttribute("homeAddress", youth.getHomeAddress());
+        model.addAttribute("isBornChr", convertIntToMsg(youth.getIsBornChr()));
+        model.addAttribute("isSelfIn", convertIntToMsg(youth.getIsSelfIn()));
+        model.addAttribute("guideName", youth.getGuideName());
+        if(youth.getOccType() != null)
+            model.addAttribute("occType", youth.getOccType().getOccType());
+        if(youth.getOcc() != null)
+            model.addAttribute("occ", youth.getOcc().getOccName());
+        if(youth.getBizType() != null)
+            model.addAttribute("bizType", youth.getBizType().getBizType());
+        if(youth.getReligionType() != null)
+            model.addAttribute("religionType", youth.getReligionType().getReligionType());
+        model.addAttribute("churchRegDate", youth.getChurchRegDate());
+        model.addAttribute("isAttending", convertIntToMsg(youth.getIsAttending()));
+        model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
 
-        return value != 0;
+        return model;
+    }
+
+    public Youth setYouthInformation (Youth youth, HttpServletRequest request) throws ParseException {
+        youth.setYouthName(request.getParameter("youthName"));
+        youth.setYouthPeer(request.getParameter("youthPeer"));
+        youth.setGender(request.getParameter("gender").charAt(0));
+        youth.setBirthDate(DateUtility.parse(request.getParameter("birthDate")));
+        youth.setCellPhone(request.getParameter("cellPhone"));
+        youth.setHomeAddress(request.getParameter("homeAddress"));
+        youth.setIsBornChr(Integer.valueOf(request.getParameter("isBornChr")));
+        youth.setIsSelfIn(Integer.valueOf(request.getParameter("isSelfIn")));
+        youth.setGuideName(request.getParameter("guideName"));
+        youth.setOccType(occTypeDao.findById(Integer.valueOf(request.getParameter("occType"))).get());
+        youth.setOcc(occDao.findById(Integer.valueOf(request.getParameter("occ"))).get());
+        youth.setBizType(bizTypeDao.findById(Integer.valueOf(request.getParameter("bizType"))).get());
+        youth.setReligionType(religionTypeDao.findById(Integer.valueOf(request.getParameter("religionType"))).get());
+        youth.setChurchRegDate(DateUtility.parse(request.getParameter("churchRegDate")));
+        youth.setIsAttending(Integer.valueOf(request.getParameter("isAttending")));
+        youth.setIsRegistered(Integer.valueOf(request.getParameter("isRegistered")));
+        youth.setUpdateTime(DateUtility.getToday());
+
+        return youth;
     }
 
     private final YouthDao youthDao;
     private final OccTypeDao occTypeDao;
     private final OccDao occDao;
+    private final BizTypeDao bizTypeDao;
+    private final ReligionTypeDao religionTypeDao;
 
     @Autowired
-    public YouthController(YouthDao youthDao, OccTypeDao occTypeDao, OccDao occDao) {
+    public YouthController(YouthDao youthDao, OccTypeDao occTypeDao, OccDao occDao, BizTypeDao bizTypeDao, ReligionTypeDao religionTypeDao) {
         this.youthDao = youthDao;
         this.occTypeDao = occTypeDao;
         this.occDao = occDao;
+        this.bizTypeDao = bizTypeDao;
+        this.religionTypeDao = religionTypeDao;
     }
 
-    //TODO 청년 정보 입력 페이지 생성
     @PostMapping(value = "youthInsert")
-    public String youthInsert(HttpServletRequest request, Model model) throws Exception {
+    public String youthInsert(Model model) throws Exception {
+        List<Map<String, Object>> occTypeList = new ArrayList<>();
+        occTypeDao.findAll().forEach(occType -> {
+            Map<String, Object> occTypeMap = new HashMap<>();
+            occTypeMap.put("key", occType.getOccTypeCode());
+            occTypeMap.put("value", occType.getOccType());
+            occTypeList.add(occTypeMap);
+        });
+        model.addAttribute("occTypeList", occTypeList);
+
+        List<Map<String, Object>> occList = new ArrayList<>();
+        occDao.findAll().forEach(occ -> {
+            Map<String, Object> occMap = new HashMap<>();
+            occMap.put("key", occ.getOccCode());
+            occMap.put("value", occ.getOccName());
+            occList.add(occMap);
+        });
+        model.addAttribute("occList", occList);
+
+        List<Map<String, Object>> bizTypeList = new ArrayList<>();
+        bizTypeDao.findAll().forEach(bizType -> {
+            Map<String, Object> bizTypeMap = new HashMap<>();
+            bizTypeMap.put("key", bizType.getBizTypeCode());
+            bizTypeMap.put("value", bizType.getBizType());
+            bizTypeList.add(bizTypeMap);
+        });
+        model.addAttribute("bizTypeList", bizTypeList);
+
+        List<Map<String, Object>> religionTypeList = new ArrayList<>();
+        religionTypeDao.findAll().forEach(religionType -> {
+            Map<String, Object> religionTypeMap = new HashMap<>();
+            religionTypeMap.put("key", religionType.getReligionTypeCode());
+            religionTypeMap.put("value", religionType.getReligionType());
+            religionTypeList.add(religionTypeMap);
+        });
+        model.addAttribute("religionTypeList", religionTypeList);
 
         return "youth/youthInsert";
     }
 
-    //TODO 청년 정보 수정 페이지 생성
+    @PostMapping(value = "youthInsertResult")
+    public String youthInsertResult(HttpServletRequest request, Model model) throws Exception {
+        Youth youth = setYouthInformation(new Youth(), request);
+        model = addYouthDetailToModel(youth, model);
+        Youth saveResult = youthDao.save(youth);
+        model.addAttribute("youthId", saveResult.getYouthId());
+        model.addAttribute("success", youth.equals(saveResult));
+
+        return "youth/youthInsertResult";
+    }
+
     @PostMapping(value = "youthModify")
     public String youthModify(HttpServletRequest request, Model model) throws Exception {
         Integer youthId = Integer.valueOf(request.getParameter("youthId"));
@@ -86,14 +182,6 @@ public class YouthController {
             model.addAttribute("isBornChr", convertIntToMsg(youth.getIsBornChr()));
             model.addAttribute("isSelfIn", convertIntToMsg(youth.getIsSelfIn()));
             model.addAttribute("guideName", youth.getGuideName());
-            if(youth.getOccType() != null)
-                model.addAttribute("occType", youth.getOccType().getOccType());
-            if(youth.getOcc() != null)
-                model.addAttribute("occ", youth.getOcc().getOccName());
-            if(youth.getBizType() != null)
-                model.addAttribute("bizType", youth.getBizType().getBizType());
-            if(youth.getReligionType() != null)
-                model.addAttribute("religionType", youth.getReligionType().getReligionType());
             model.addAttribute("churchRegDate", youth.getChurchRegDate());
             model.addAttribute("isAttending", convertIntToMsg(youth.getIsAttending()));
             model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
@@ -103,6 +191,8 @@ public class YouthController {
                 Map<String, Object> occTypeMap = new HashMap<>();
                 occTypeMap.put("key", occType.getOccTypeCode());
                 occTypeMap.put("value", occType.getOccType());
+                if(occType.equals(youth.getOccType()))
+                    occTypeMap.put("selected", true);
                 occTypeList.add(occTypeMap);
             });
             model.addAttribute("occTypeList", occTypeList);
@@ -110,11 +200,35 @@ public class YouthController {
             List<Map<String, Object>> occList = new ArrayList<>();
             occDao.findAll().forEach(occ -> {
                 Map<String, Object> occMap = new HashMap<>();
-                occMap.put("key", occType.getOccCode());
-                occMap.put("value", occType.getOcc());
+                occMap.put("key", occ.getOccCode());
+                occMap.put("value", occ.getOccName());
+                if(occ.equals(youth.getOcc()))
+                    occMap.put("selected", true);
                 occList.add(occMap);
             });
-            model.addAttribute("occTypeList", occList);
+            model.addAttribute("occList", occList);
+
+            List<Map<String, Object>> bizTypeList = new ArrayList<>();
+            bizTypeDao.findAll().forEach(bizType -> {
+                Map<String, Object> bizTypeMap = new HashMap<>();
+                bizTypeMap.put("key", bizType.getBizTypeCode());
+                bizTypeMap.put("value", bizType.getBizType());
+                if(bizType.equals(youth.getBizType()))
+                    bizTypeMap.put("selected", true);
+                bizTypeList.add(bizTypeMap);
+            });
+            model.addAttribute("bizTypeList", bizTypeList);
+
+            List<Map<String, Object>> religionTypeList = new ArrayList<>();
+            religionTypeDao.findAll().forEach(religionType -> {
+                Map<String, Object> religionTypeMap = new HashMap<>();
+                religionTypeMap.put("key", religionType.getReligionTypeCode());
+                religionTypeMap.put("value", religionType.getReligionType());
+                if(religionType.equals(youth.getReligionType()))
+                    religionTypeMap.put("selected", true);
+                religionTypeList.add(religionTypeMap);
+            });
+            model.addAttribute("religionTypeList", religionTypeList);
         }
 
         return "youth/youthModify";
@@ -122,46 +236,26 @@ public class YouthController {
 
     @PostMapping(value = "youthModifyResult")
     public String youthModifyResult(HttpServletRequest request, Model model) throws Exception {
-
-        return "youth/youthModify";
+        Integer youthId = Integer.valueOf(request.getParameter("youthId"));
+        Optional<Youth> result = youthDao.findById(youthId);
+        if(result.isPresent()) {
+            Youth youth = setYouthInformation(result.get(), request);
+            model = addYouthDetailToModel(youth, model);
+            Youth saveResult = youthDao.save(youth);
+            model.addAttribute("success", youth.equals(saveResult));
+        }
+        return "youth/youthModifyResult";
     }
 
     @GetMapping(value = "youthDetail")
     public String youthDetail(HttpServletRequest request, Model model) throws Exception {
         Integer youthId = Integer.valueOf(request.getParameter("youthId"));
-
         Optional<Youth> result = youthDao.findById(youthId);
         model.addAttribute("found", result.isPresent());
         if(result.isPresent()) {
             Youth youth = result.get();
-            model.addAttribute("youthId", youthId);
-            model.addAttribute("youthName", youth.getYouthName());
-            model.addAttribute("youthPeer", youth.getYouthPeer());
-            if(youth.getGender() != null) {
-                if (youth.getGender().equals('M'))
-                    model.addAttribute("gender", "남");
-                else
-                    model.addAttribute("gender", "여");
-            }
-            model.addAttribute("birthDate", youth.getBirthDate());
-            model.addAttribute("cellPhone", youth.getCellPhone());
-            model.addAttribute("homeAddress", youth.getHomeAddress());
-            model.addAttribute("isBornChr", convertIntToMsg(youth.getIsBornChr()));
-            model.addAttribute("isSelfIn", convertIntToMsg(youth.getIsSelfIn()));
-            model.addAttribute("guideName", youth.getGuideName());
-            if(youth.getOccType() != null)
-                model.addAttribute("occType", youth.getOccType().getOccType());
-            if(youth.getOcc() != null)
-                model.addAttribute("occ", youth.getOcc().getOccName());
-            if(youth.getBizType() != null)
-                model.addAttribute("bizType", youth.getBizType().getBizType());
-            if(youth.getReligionType() != null)
-                model.addAttribute("religionType", youth.getReligionType().getReligionType());
-            model.addAttribute("churchRegDate", youth.getChurchRegDate());
-            model.addAttribute("isAttending", convertIntToMsg(youth.getIsAttending()));
-            model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
+            addYouthDetailToModel(youth, model);
         }
-
         return "youth/youthDetail";
     }
 

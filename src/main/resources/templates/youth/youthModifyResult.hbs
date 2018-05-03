@@ -6,7 +6,8 @@
 <h3>청년 - 상세 정보</h3>
 <a href="youthSearch">검색 페이지로</a>
 <hr>
-{{#if found}}
+{{#if success}}
+    청년 상세 정보 수정을 성공하였습니다.<br>
     <table border="1" cellpadding="1">
         <tr>
             <td><b>항목</b></td>
@@ -82,7 +83,7 @@
         <input type="hidden" name="youthId" value="{{youthId}}">
     </form>
 {{else}}
-    해당 청년을 찾을 수 없습니다.<br>
+    청년 상세 정보 수정을 실패하였습니다.<br>
 {{/if}}
 </body>
 </html>

@@ -8,7 +8,7 @@
 <hr>
 {{#if found}}
     전체 개수: {{size}}<br>
-    <form id="deleteYouthForm" action="youthDelete" method="post">
+    <form id="deleteYouthForm" action="youthDeleteResult" method="post">
         <table border="1" cellpadding="1">
             <tbody>
             <tr>
@@ -29,7 +29,7 @@
         </table>
         <input type="submit" name="deleteSubmit" value="선택 항목 삭제">
     </form>
-    <form method="post" action="youthDeleteAll">
+    <form method="post" action="youthDeleteAllResult">
         <input type="submit" name="deleteSubmit" value="모두 삭제">
     </form>
     <form method="post" action="youthInsert">

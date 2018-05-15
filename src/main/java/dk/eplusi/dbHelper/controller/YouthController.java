@@ -1,9 +1,7 @@
 package dk.eplusi.dbHelper.controller;
 
 import dk.eplusi.dbHelper.common.DateUtility;
-import dk.eplusi.dbHelper.dao.*;
-import dk.eplusi.dbHelper.model.code.Occ;
-import dk.eplusi.dbHelper.model.code.ReligionType;
+import dk.eplusi.dbHelper.repositorty.*;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -86,10 +84,10 @@ public class YouthController {
         youth.setIsBornChr(Integer.valueOf(request.getParameter("isBornChr")));
         youth.setIsSelfIn(Integer.valueOf(request.getParameter("isSelfIn")));
         youth.setGuideName(request.getParameter("guideName"));
-        youth.setOccType(occTypeDao.findById(Integer.valueOf(request.getParameter("occType"))).get());
-        youth.setOcc(occDao.findById(Integer.valueOf(request.getParameter("occ"))).get());
-        youth.setBizType(bizTypeDao.findById(Integer.valueOf(request.getParameter("bizType"))).get());
-        youth.setReligionType(religionTypeDao.findById(Integer.valueOf(request.getParameter("religionType"))).get());
+        youth.setOccType(occTypeRepository.findById(Integer.valueOf(request.getParameter("occType"))).get());
+        youth.setOcc(occRepository.findById(Integer.valueOf(request.getParameter("occ"))).get());
+        youth.setBizType(bizTypeRepository.findById(Integer.valueOf(request.getParameter("bizType"))).get());
+        youth.setReligionType(religionTypeRepository.findById(Integer.valueOf(request.getParameter("religionType"))).get());
         youth.setChurchRegDate(DateUtility.parse(request.getParameter("churchRegDate")));
         youth.setIsAttending(Integer.valueOf(request.getParameter("isAttending")));
         youth.setIsRegistered(Integer.valueOf(request.getParameter("isRegistered")));
@@ -98,25 +96,25 @@ public class YouthController {
         return youth;
     }
 
-    private final YouthDao youthDao;
-    private final OccTypeDao occTypeDao;
-    private final OccDao occDao;
-    private final BizTypeDao bizTypeDao;
-    private final ReligionTypeDao religionTypeDao;
+    private final YouthRepository youthRepository;
+    private final OccTypeRepository occTypeRepository;
+    private final OccRepository occRepository;
+    private final BizTypeRepository bizTypeRepository;
+    private final ReligionTypeRepository religionTypeRepository;
 
     @Autowired
-    public YouthController(YouthDao youthDao, OccTypeDao occTypeDao, OccDao occDao, BizTypeDao bizTypeDao, ReligionTypeDao religionTypeDao) {
-        this.youthDao = youthDao;
-        this.occTypeDao = occTypeDao;
-        this.occDao = occDao;
-        this.bizTypeDao = bizTypeDao;
-        this.religionTypeDao = religionTypeDao;
+    public YouthController(YouthRepository youthRepository, OccTypeRepository occTypeRepository, OccRepository occRepository, BizTypeRepository bizTypeRepository, ReligionTypeRepository religionTypeRepository) {
+        this.youthRepository = youthRepository;
+        this.occTypeRepository = occTypeRepository;
+        this.occRepository = occRepository;
+        this.bizTypeRepository = bizTypeRepository;
+        this.religionTypeRepository = religionTypeRepository;
     }
 
     @PostMapping(value = "youthInsert")
     public String youthInsert(Model model) throws Exception {
         List<Map<String, Object>> occTypeList = new ArrayList<>();
-        occTypeDao.findAll().forEach(occType -> {
+        occTypeRepository.findAll().forEach(occType -> {
             Map<String, Object> occTypeMap = new HashMap<>();
             occTypeMap.put("key", occType.getOccTypeCode());
             occTypeMap.put("value", occType.getOccType());
@@ -125,7 +123,7 @@ public class YouthController {
         model.addAttribute("occTypeList", occTypeList);
 
         List<Map<String, Object>> occList = new ArrayList<>();
-        occDao.findAll().forEach(occ -> {
+        occRepository.findAll().forEach(occ -> {
             Map<String, Object> occMap = new HashMap<>();
             occMap.put("key", occ.getOccCode());
             occMap.put("value", occ.getOccName());
@@ -134,7 +132,7 @@ public class YouthController {
         model.addAttribute("occList", occList);
 
         List<Map<String, Object>> bizTypeList = new ArrayList<>();
-        bizTypeDao.findAll().forEach(bizType -> {
+        bizTypeRepository.findAll().forEach(bizType -> {
             Map<String, Object> bizTypeMap = new HashMap<>();
             bizTypeMap.put("key", bizType.getBizTypeCode());
             bizTypeMap.put("value", bizType.getBizType());
@@ -143,7 +141,7 @@ public class YouthController {
         model.addAttribute("bizTypeList", bizTypeList);
 
         List<Map<String, Object>> religionTypeList = new ArrayList<>();
-        religionTypeDao.findAll().forEach(religionType -> {
+        religionTypeRepository.findAll().forEach(religionType -> {
             Map<String, Object> religionTypeMap = new HashMap<>();
             religionTypeMap.put("key", religionType.getReligionTypeCode());
             religionTypeMap.put("value", religionType.getReligionType());
@@ -158,7 +156,7 @@ public class YouthController {
     public String youthInsertResult(HttpServletRequest request, Model model) throws Exception {
         Youth youth = setYouthInformation(new Youth(), request);
         model = addYouthDetailToModel(youth, model);
-        Youth saveResult = youthDao.save(youth);
+        Youth saveResult = youthRepository.save(youth);
         model.addAttribute("youthId", saveResult.getYouthId());
         model.addAttribute("success", youth.equals(saveResult));
 
@@ -168,7 +166,7 @@ public class YouthController {
     @PostMapping(value = "youthModify")
     public String youthModify(HttpServletRequest request, Model model) throws Exception {
         Integer youthId = Integer.valueOf(request.getParameter("youthId"));
-        Optional<Youth> result = youthDao.findById(youthId);
+        Optional<Youth> result = youthRepository.findById(youthId);
         if(result.isPresent()) {
             Youth youth = result.get();
             model.addAttribute("youthId", youthId);
@@ -187,7 +185,7 @@ public class YouthController {
             model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
 
             List<Map<String, Object>> occTypeList = new ArrayList<>();
-            occTypeDao.findAll().forEach(occType -> {
+            occTypeRepository.findAll().forEach(occType -> {
                 Map<String, Object> occTypeMap = new HashMap<>();
                 occTypeMap.put("key", occType.getOccTypeCode());
                 occTypeMap.put("value", occType.getOccType());
@@ -198,7 +196,7 @@ public class YouthController {
             model.addAttribute("occTypeList", occTypeList);
 
             List<Map<String, Object>> occList = new ArrayList<>();
-            occDao.findAll().forEach(occ -> {
+            occRepository.findAll().forEach(occ -> {
                 Map<String, Object> occMap = new HashMap<>();
                 occMap.put("key", occ.getOccCode());
                 occMap.put("value", occ.getOccName());
@@ -209,7 +207,7 @@ public class YouthController {
             model.addAttribute("occList", occList);
 
             List<Map<String, Object>> bizTypeList = new ArrayList<>();
-            bizTypeDao.findAll().forEach(bizType -> {
+            bizTypeRepository.findAll().forEach(bizType -> {
                 Map<String, Object> bizTypeMap = new HashMap<>();
                 bizTypeMap.put("key", bizType.getBizTypeCode());
                 bizTypeMap.put("value", bizType.getBizType());
@@ -220,7 +218,7 @@ public class YouthController {
             model.addAttribute("bizTypeList", bizTypeList);
 
             List<Map<String, Object>> religionTypeList = new ArrayList<>();
-            religionTypeDao.findAll().forEach(religionType -> {
+            religionTypeRepository.findAll().forEach(religionType -> {
                 Map<String, Object> religionTypeMap = new HashMap<>();
                 religionTypeMap.put("key", religionType.getReligionTypeCode());
                 religionTypeMap.put("value", religionType.getReligionType());
@@ -237,11 +235,11 @@ public class YouthController {
     @PostMapping(value = "youthModifyResult")
     public String youthModifyResult(HttpServletRequest request, Model model) throws Exception {
         Integer youthId = Integer.valueOf(request.getParameter("youthId"));
-        Optional<Youth> result = youthDao.findById(youthId);
+        Optional<Youth> result = youthRepository.findById(youthId);
         if(result.isPresent()) {
             Youth youth = setYouthInformation(result.get(), request);
             model = addYouthDetailToModel(youth, model);
-            Youth saveResult = youthDao.save(youth);
+            Youth saveResult = youthRepository.save(youth);
             model.addAttribute("success", youth.equals(saveResult));
         }
         return "youth/youthModifyResult";
@@ -250,7 +248,7 @@ public class YouthController {
     @GetMapping(value = "youthDetail")
     public String youthDetail(HttpServletRequest request, Model model) throws Exception {
         Integer youthId = Integer.valueOf(request.getParameter("youthId"));
-        Optional<Youth> result = youthDao.findById(youthId);
+        Optional<Youth> result = youthRepository.findById(youthId);
         model.addAttribute("found", result.isPresent());
         if(result.isPresent()) {
             Youth youth = result.get();
@@ -272,20 +270,20 @@ public class YouthController {
         if(target != null && !target.isEmpty() && keyword != null && !keyword.isEmpty()) {
             switch (target) {
                 case "youth_name":
-                    result = youthDao.findByYouthName(keyword, pageable);
+                    result = youthRepository.findByYouthName(keyword, pageable);
                     break;
                 case "youth_peer":
-                    result = youthDao.findByYouthPeer(keyword, pageable);
+                    result = youthRepository.findByYouthPeer(keyword, pageable);
                     break;
                 case "cell_phone":
-                    result = youthDao.findByCellPhone(keyword, pageable);
+                    result = youthRepository.findByCellPhone(keyword, pageable);
                     break;
                 default:
-                    result = youthDao.findAll(pageable);
+                    result = youthRepository.findAll(pageable);
                     break;
             }
         } else {
-            result = youthDao.findAll(pageable);
+            result = youthRepository.findAll(pageable);
         }
         model.addAttribute("found", result.getTotalElements() > 0);
         model.addAttribute("size", result.getTotalElements());
@@ -312,4 +310,25 @@ public class YouthController {
         return "youth/youthSearch";
     }
 
+    @PostMapping(value = "youthDeleteResult")
+    public String youthDeleteResult(HttpServletRequest request, Model model) throws Exception {
+        Integer youthId = Integer.valueOf(request.getParameter("youthId"));
+        Optional<Youth> result = youthRepository.findById(youthId);
+        if(result.isPresent()) {
+            Youth youth = result.get();
+            youthRepository.delete(youth);
+            model.addAttribute("name", youth.getYouthName());
+            model.addAttribute("success", true);
+        } else {
+            model.addAttribute("success", false);
+        }
+        return "youth/youthDeleteResult";
+    }
+
+    @PostMapping(value = "youthDeleteAllResult")
+    public String youthDeleteAllResult(HttpServletRequest request, Model model) throws Exception {
+        youthRepository.deleteAll();
+        model.addAttribute("success", true);    //TODO 실패조건?
+        return "youth/youthDeleteAllResult";
+    }
 }

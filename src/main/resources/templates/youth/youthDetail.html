@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>DK E+I - DB Helper</title>
 </head>
@@ -6,16 +6,14 @@
 <h3>청년 - 상세 정보</h3>
 <a href="youthSearch">검색 페이지로</a>
 <hr>
-{{#if success}}
-    청년 정보 추가를 성공하였습니다.<br>
-    <table border="1" cellpadding="1">
+    <table th:if="${found}" border="1" cellpadding="1">
         <tr>
             <td><b>항목</b></td>
             <td><b>내용</b></td>
         </tr>
         <tr>
             <td>청년 이름</td>
-            <td>{{youthName}}</td>
+            <td th:text="${youth}"></td>
         </tr>
         <tr>
             <td>청년 또래</td>
@@ -83,7 +81,7 @@
         <input type="hidden" name="youthId" value="{{youthId}}">
     </form>
 {{else}}
-    청년 정보 추가를 실패하였습니다.<br>
+    해당 청년을 찾을 수 없습니다.<br>
 {{/if}}
 </body>
 </html>

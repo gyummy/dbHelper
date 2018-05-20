@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>DK E+I - DB Helper</title>
 </head>
@@ -6,8 +6,8 @@
 <h3>청년 - 검색</h3>
 <a href="main">처음으로</a>
 <hr>
-{{#if found}}
-    전체 개수: {{size}}<br>
+<div th:if="${found}">
+    전체 개수: <span th:text="${size}"></span>
     <form id="deleteYouthForm" action="youthDeleteResult" method="post">
         <table border="1" cellpadding="1">
             <tbody>
@@ -17,14 +17,12 @@
                 <td><b>청년 또래</b></td>
                 <td><b>휴대전화번호</b></td>
             </tr>
-            {{#each youths}}
-                <tr>
-                    <td><input type="checkbox" name="youthId" value="{{youthId}}"></td>
-                    <td><a href="youthDetail?youthId={{youthId}}">{{youthName}}</a></td>
-                    <td>{{youthPeer}}</td>
-                    <td>{{cellPhone}}</td>
+                <tr th:each="youth : ${youths}">
+                    <td><input type="checkbox" name="youthId" th:value="${youth.youthId}"></td>
+                    <td><a th:href="@{youthDetail?youthId=youth.youthId}" th:text="${youth.youthName}"></a></td>
+                    <td th:text="${youth.youthPeer}"></td>
+                    <td th:text="${youth.cellPhone}"></td>
                 </tr>
-            {{/each}}
             </tbody>
         </table>
         <input type="submit" name="deleteSubmit" value="선택 항목 삭제">
@@ -36,19 +34,16 @@
         <input type="submit" name="insertSubmit" value="청년 추가">
     </form>
     <form id="searchYouthForm" method="post" action="youthSearch">
-        <select name="target">
-            {{#each keywordList}}
-                <option value="{{key}}">{{name}}</option>
-            {{/each}}
+        <select name="target" th:each="keyword : ${keywordList}">
+            <option th:value="${keyword.get('key')}" th:text="${keyword.get('name')}"></option>
         </select>
         <input type="text" name="keyword">
         <input type="submit" name="submit" value="검색">
     </form>
-    {{#each pageNumbers}}
-        <a href="youthSearch?page={{value}}">{{display}}</a>
-    {{/each}}
-{{else}}
-    청년 목록을 불러올 수 없습니다.
-{{/if}}
+    <div th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{youthSearch?page=pageNumber.get('value')}" th:text="${pageNumber.get('display')}"></a>
+    </div>
+</div>
+<div th:unless="${found}">청년 목록을 불러올 수 없습니다.</div>
 </body>
 </html>

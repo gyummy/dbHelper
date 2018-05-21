@@ -1,6 +1,7 @@
 package dk.eplusi.dbHelper.controller;
 
 import dk.eplusi.dbHelper.common.DateUtility;
+import dk.eplusi.dbHelper.model.code.OccType;
 import dk.eplusi.dbHelper.repositorty.*;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
 import org.slf4j.Logger;
@@ -43,36 +44,36 @@ public class YouthController {
         return value == 0 ? "아니오" : "예";
     }
 
-    private Model addYouthDetailToModel(Youth youth, Model model) {
-        model.addAttribute("youthId", youth.getYouthId());
-        model.addAttribute("youthName", youth.getYouthName());
-        model.addAttribute("youthPeer", youth.getYouthPeer());
-        if(youth.getGender() != null) {
-            if (youth.getGender().equals('M'))
-                model.addAttribute("gender", "남");
-            else
-                model.addAttribute("gender", "여");
-        }
-        model.addAttribute("birthDate", youth.getBirthDate());
-        model.addAttribute("cellPhone", youth.getCellPhone());
-        model.addAttribute("homeAddress", youth.getHomeAddress());
-        model.addAttribute("isBornChr", convertIntToMsg(youth.getIsBornChr()));
-        model.addAttribute("isSelfIn", convertIntToMsg(youth.getIsSelfIn()));
-        model.addAttribute("guideName", youth.getGuideName());
-        if(youth.getOccType() != null)
-            model.addAttribute("occType", youth.getOccType().getOccType());
-        if(youth.getOcc() != null)
-            model.addAttribute("occ", youth.getOcc().getOccName());
-        if(youth.getBizType() != null)
-            model.addAttribute("bizType", youth.getBizType().getBizType());
-        if(youth.getReligionType() != null)
-            model.addAttribute("religionType", youth.getReligionType().getReligionType());
-        model.addAttribute("churchRegDate", youth.getChurchRegDate());
-        model.addAttribute("isAttending", convertIntToMsg(youth.getIsAttending()));
-        model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
-
-        return model;
-    }
+//    private Model addYouthDetailToModel(Youth youth, Model model) {
+//        model.addAttribute("youthId", youth.getYouthId());
+//        model.addAttribute("youthName", youth.getYouthName());
+//        model.addAttribute("youthPeer", youth.getYouthPeer());
+//        if(youth.getGender() != null) {
+//            if (youth.getGender().equals('M'))
+//                model.addAttribute("gender", "남");
+//            else
+//                model.addAttribute("gender", "여");
+//        }
+//        model.addAttribute("birthDate", youth.getBirthDate());
+//        model.addAttribute("cellPhone", youth.getCellPhone());
+//        model.addAttribute("homeAddress", youth.getHomeAddress());
+//        model.addAttribute("isBornChr", convertIntToMsg(youth.getIsBornChr()));
+//        model.addAttribute("isSelfIn", convertIntToMsg(youth.getIsSelfIn()));
+//        model.addAttribute("guideName", youth.getGuideName());
+//        if(youth.getOccType() != null)
+//            model.addAttribute("occType", youth.getOccType().getOccType());
+//        if(youth.getOcc() != null)
+//            model.addAttribute("occ", youth.getOcc().getOccName());
+//        if(youth.getBizType() != null)
+//            model.addAttribute("bizType", youth.getBizType().getBizType());
+//        if(youth.getReligionType() != null)
+//            model.addAttribute("religionType", youth.getReligionType().getReligionType());
+//        model.addAttribute("churchRegDate", youth.getChurchRegDate());
+//        model.addAttribute("isAttending", convertIntToMsg(youth.getIsAttending()));
+//        model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
+//
+//        return model;
+//    }
 
     public Youth setYouthInformation (Youth youth, HttpServletRequest request) throws ParseException {
         youth.setYouthName(request.getParameter("youthName"));
@@ -113,41 +114,41 @@ public class YouthController {
 
     @PostMapping(value = "youthInsert")
     public String youthInsert(Model model) throws Exception {
-        List<Map<String, Object>> occTypeList = new ArrayList<>();
-        occTypeRepository.findAll().forEach(occType -> {
-            Map<String, Object> occTypeMap = new HashMap<>();
-            occTypeMap.put("key", occType.getOccTypeCode());
-            occTypeMap.put("value", occType.getOccType());
-            occTypeList.add(occTypeMap);
-        });
-        model.addAttribute("occTypeList", occTypeList);
+//        List<Map<String, Object>> occTypeList = new ArrayList<>();
+//        occTypeRepository.findAll().forEach(occType -> {
+//            Map<String, Object> occTypeMap = new HashMap<>();
+//            occTypeMap.put("key", occType.getOccTypeCode());
+//            occTypeMap.put("value", occType.getOccType());
+//            occTypeList.add(occTypeMap);
+//        });
+        model.addAttribute("occTypeList", occTypeRepository.findAll());
 
-        List<Map<String, Object>> occList = new ArrayList<>();
-        occRepository.findAll().forEach(occ -> {
-            Map<String, Object> occMap = new HashMap<>();
-            occMap.put("key", occ.getOccCode());
-            occMap.put("value", occ.getOccName());
-            occList.add(occMap);
-        });
-        model.addAttribute("occList", occList);
+//        List<Map<String, Object>> occList = new ArrayList<>();
+//        occRepository.findAll().forEach(occ -> {
+//            Map<String, Object> occMap = new HashMap<>();
+//            occMap.put("key", occ.getOccCode());
+//            occMap.put("value", occ.getOccName());
+//            occList.add(occMap);
+//        });
+        model.addAttribute("occList", occRepository.findAll());
 
-        List<Map<String, Object>> bizTypeList = new ArrayList<>();
-        bizTypeRepository.findAll().forEach(bizType -> {
-            Map<String, Object> bizTypeMap = new HashMap<>();
-            bizTypeMap.put("key", bizType.getBizTypeCode());
-            bizTypeMap.put("value", bizType.getBizType());
-            bizTypeList.add(bizTypeMap);
-        });
-        model.addAttribute("bizTypeList", bizTypeList);
+//        List<Map<String, Object>> bizTypeList = new ArrayList<>();
+//        bizTypeRepository.findAll().forEach(bizType -> {
+//            Map<String, Object> bizTypeMap = new HashMap<>();
+//            bizTypeMap.put("key", bizType.getBizTypeCode());
+//            bizTypeMap.put("value", bizType.getBizType());
+//            bizTypeList.add(bizTypeMap);
+//        });
+        model.addAttribute("bizTypeList", bizTypeRepository.findAll());
 
-        List<Map<String, Object>> religionTypeList = new ArrayList<>();
-        religionTypeRepository.findAll().forEach(religionType -> {
-            Map<String, Object> religionTypeMap = new HashMap<>();
-            religionTypeMap.put("key", religionType.getReligionTypeCode());
-            religionTypeMap.put("value", religionType.getReligionType());
-            religionTypeList.add(religionTypeMap);
-        });
-        model.addAttribute("religionTypeList", religionTypeList);
+//        List<Map<String, Object>> religionTypeList = new ArrayList<>();
+//        religionTypeRepository.findAll().forEach(religionType -> {
+//            Map<String, Object> religionTypeMap = new HashMap<>();
+//            religionTypeMap.put("key", religionType.getReligionTypeCode());
+//            religionTypeMap.put("value", religionType.getReligionType());
+//            religionTypeList.add(religionTypeMap);
+//        });
+        model.addAttribute("religionTypeList", religionTypeRepository.findAll());
 
         return "youth/youthInsert";
     }
@@ -155,7 +156,8 @@ public class YouthController {
     @PostMapping(value = "youthInsertResult")
     public String youthInsertResult(HttpServletRequest request, Model model) throws Exception {
         Youth youth = setYouthInformation(new Youth(), request);
-        model = addYouthDetailToModel(youth, model);
+//        model = addYouthDetailToModel(youth, model);
+        model.addAttribute("youth", youth);
         Youth saveResult = youthRepository.save(youth);
         model.addAttribute("youthId", saveResult.getYouthId());
         model.addAttribute("success", youth.equals(saveResult));
@@ -169,20 +171,21 @@ public class YouthController {
         Optional<Youth> result = youthRepository.findById(youthId);
         if(result.isPresent()) {
             Youth youth = result.get();
-            model.addAttribute("youthId", youthId);
-            model.addAttribute("youthName", youth.getYouthName());
-            model.addAttribute("youthPeer", youth.getYouthPeer());
-            if(youth.getGender() != null)
-                model.addAttribute("isMale", youth.getGender().equals('M'));
-            model.addAttribute("birthDate", youth.getBirthDate());
-            model.addAttribute("cellPhone", youth.getCellPhone());
-            model.addAttribute("homeAddress", youth.getHomeAddress());
-            model.addAttribute("isBornChr", convertIntToMsg(youth.getIsBornChr()));
-            model.addAttribute("isSelfIn", convertIntToMsg(youth.getIsSelfIn()));
-            model.addAttribute("guideName", youth.getGuideName());
-            model.addAttribute("churchRegDate", youth.getChurchRegDate());
-            model.addAttribute("isAttending", convertIntToMsg(youth.getIsAttending()));
-            model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
+//            model.addAttribute("youthId", youthId);
+//            model.addAttribute("youthName", youth.getYouthName());
+//            model.addAttribute("youthPeer", youth.getYouthPeer());
+//            if(youth.getGender() != null)
+//                model.addAttribute("isMale", youth.getGender().equals('M'));
+//            model.addAttribute("birthDate", youth.getBirthDate());
+//            model.addAttribute("cellPhone", youth.getCellPhone());
+//            model.addAttribute("homeAddress", youth.getHomeAddress());
+//            model.addAttribute("isBornChr", convertIntToMsg(youth.getIsBornChr()));
+//            model.addAttribute("isSelfIn", convertIntToMsg(youth.getIsSelfIn()));
+//            model.addAttribute("guideName", youth.getGuideName());
+//            model.addAttribute("churchRegDate", youth.getChurchRegDate());
+//            model.addAttribute("isAttending", convertIntToMsg(youth.getIsAttending()));
+//            model.addAttribute("isRegistered", convertIntToMsg(youth.getIsRegistered()));
+            model.addAttribute("youth", youth);
 
             List<Map<String, Object>> occTypeList = new ArrayList<>();
             occTypeRepository.findAll().forEach(occType -> {
@@ -238,7 +241,7 @@ public class YouthController {
         Optional<Youth> result = youthRepository.findById(youthId);
         if(result.isPresent()) {
             Youth youth = setYouthInformation(result.get(), request);
-            model = addYouthDetailToModel(youth, model);
+            model.addAttribute("youth", youth);
             Youth saveResult = youthRepository.save(youth);
             model.addAttribute("success", youth.equals(saveResult));
         }
@@ -251,8 +254,10 @@ public class YouthController {
         Optional<Youth> result = youthRepository.findById(youthId);
         model.addAttribute("found", result.isPresent());
         if(result.isPresent()) {
+            //TODO occType, occ, bizType, religionType 객체 null인 경우 처리 필요
             Youth youth = result.get();
-            addYouthDetailToModel(youth, model);
+//            addYouthDetailToModel(youth, model);
+            model.addAttribute("youth", youth);
         }
         return "youth/youthDetail";
     }
@@ -285,26 +290,13 @@ public class YouthController {
         } else {
             result = youthRepository.findAll(pageable);
         }
-        model.addAttribute("found", result.getTotalElements() > 0);
         model.addAttribute("size", result.getTotalElements());
         model.addAttribute("youths", result.getContent());
+        model.addAttribute("keywordMap", keywordMap);
 
-        List<Map<String, String>> keywordList = new ArrayList<>();
-        keywordMap.forEach((key, name) -> {
-            Map<String, String> keywordMap = new HashMap<>();
-            keywordMap.put("key", key);
-            keywordMap.put("name", name);
-            keywordList.add(keywordMap);
-        });
-        model.addAttribute("keywordList", keywordList);
-
-        List<Map<String, Integer>> pageNumbers = new ArrayList<>();
-        for(int i = 0; i < result.getTotalPages(); i++) {
-            Map<String, Integer> pageNumber = new HashMap<>();
-            pageNumber.put("value", i);
-            pageNumber.put("display", i + 1);
-            pageNumbers.add(pageNumber);
-        }
+        List<Integer> pageNumbers = new ArrayList<>();
+        for(int i = 0; i < result.getTotalPages(); i++)
+            pageNumbers.add(i);
         model.addAttribute("pageNumbers", pageNumbers);
 
         return "youth/youthSearch";

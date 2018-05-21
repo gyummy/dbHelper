@@ -6,82 +6,84 @@
 <h3>청년 - 상세 정보</h3>
 <a href="youthSearch">검색 페이지로</a>
 <hr>
-    <table th:if="${found}" border="1" cellpadding="1">
+<div th:if="${found}">
+    <table border="1" cellpadding="1" th:object="${youth}">
         <tr>
             <td><b>항목</b></td>
             <td><b>내용</b></td>
         </tr>
         <tr>
             <td>청년 이름</td>
-            <td th:text="${youth}"></td>
+            <td th:text="*{youthName}"></td>
         </tr>
         <tr>
             <td>청년 또래</td>
-            <td>{{youthPeer}}</td>
+            <td th:text="*{youthPeer}"></td>
         </tr>
         <tr>
             <td>성별</td>
-            <td>{{gender}}</td>
+            <td th:text="*{gender}"></td>
         </tr>
         <tr>
             <td>생년월일</td>
-            <td>{{birthDate}}</td>
+            <td th:text="*{birthDate}"></td>
         </tr>
         <tr>
             <td>핸드폰 번호</td>
-            <td>{{cellPhone}}</td>
+            <td th:text="*{cellPhone}"></td>
         </tr>
         <tr>
             <td>자택주소</td>
-            <td>{{homeAddress}}</td>
+            <td th:text="*{homeAddress}"></td>
         </tr>
         <tr>
             <td>모태신앙여부</td>
-            <td>{{isBornChr}}</td>
+            <td th:text="*{isBornChr}"></td>
         </tr>
         <tr>
             <td>자진등록여부</td>
-            <td>{{isSelfIn}}</td>
+            <td th:text="*{isSelfIn}"></td>
         </tr>
         <tr>
             <td>인도자 성명</td>
-            <td>{{guideName}}</td>
+            <td th:text="*{guideName}"></td>
         </tr>
         <tr>
             <td>직업 상태</td>
-            <td>{{occType}}</td>
+            <td th:text="*{occType.occType}"></td>
         </tr>
         <tr>
             <td>직업</td>
-            <td>{{occ}}</td>
+            <td th:text="*{occ.occName}"></td>
         </tr>
         <tr>
             <td>직군</td>
-            <td>{{bizType}}</td>
+            <td th:text="*{bizType.bizType}"></td>
         </tr>
         <tr>
             <td>신급</td>
-            <td>{{religionType}}</td>
+            <td th:text="*{religionType.religionType}"></td>
         </tr>
         <tr>
             <td>교회 등록 날짜</td>
-            <td>{{churchRegDate}}</td>
+            <td th:text="*{churchRegDate}"></td>
         </tr>
         <tr>
             <td>출석 상태</td>
-            <td>{{isAttending}}</td>
+            <td th:text="*{isAttending}"></td>
         </tr>
         <tr>
             <td>등록 여부</td>
-            <td>{{isRegistered}}</td>
+            <td th:text="*{isRegistered}"></td>
         </tr>
     </table>
     <form method="post" action="youthModify">
         <input type="submit" name="modifySubmit" value="상세 정보 수정">
-        <input type="hidden" name="youthId" value="{{youthId}}">
+        <input type="hidden" name="youthId" th:value="${youth.youthId}">
     </form>
-{{else}}
+</div>
+<div th:unless="${found}">
     해당 청년을 찾을 수 없습니다.<br>
-{{/if}}
+</div>
 </body>
 </html>

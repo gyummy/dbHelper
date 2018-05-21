@@ -93,8 +93,12 @@ public class Youth {
         this.youthPeer = youthPeer;
     }
 
-    public Character getGender() {
-        return gender;
+//    public Character getGender() {
+//        return gender;
+//    }
+
+    public String getGender() {
+        return gender == 'M' ? "남" : "여";
     }
 
     public void setGender(Character gender) {
@@ -125,16 +129,16 @@ public class Youth {
         this.homeAddress = homeAddress;
     }
 
-    public Integer getIsBornChr() {
-        return isBornChr;
+    public String getIsBornChr() {
+        return isBornChr == 1 ? "예" : "아니오";
     }
 
     public void setIsBornChr(Integer isBornChr) {
         this.isBornChr = isBornChr;
     }
 
-    public Integer getIsSelfIn() {
-        return isSelfIn;
+    public String getIsSelfIn() {
+        return isSelfIn == 1 ? "예" : "아니오";
     }
 
     public void setIsSelfIn(Integer isSelfIn) {
@@ -189,16 +193,16 @@ public class Youth {
         this.churchRegDate = churchRegDate;
     }
 
-    public Integer getIsAttending() {
-        return isAttending;
+    public String getIsAttending() {
+        return isAttending == 1 ? "예" : "아니오";
     }
 
     public void setIsAttending(Integer isAttending) {
         this.isAttending = isAttending;
     }
 
-    public Integer getIsRegistered() {
-        return isRegistered;
+    public String getIsRegistered() {
+        return isRegistered == 1 ? "예" : "아니오";
     }
 
     public void setIsRegistered(Integer isRegistered) {

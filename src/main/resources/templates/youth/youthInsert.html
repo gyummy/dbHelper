@@ -52,9 +52,7 @@
             <td>직업 상태</td>
             <td>
                 <select name="occType">
-                    {{#each occTypeList}}
-                        <option name="occTypeOption" value="{{key}}">{{value}}</option>
-                    {{/each}}
+                        <option th:each="occType : ${occTypeList}" name="occTypeOption" th:value="${occType.OccTypeCode}" th:text="${occType.OccType}"></option>
                 </select>
             </td>
         </tr>
@@ -62,9 +60,7 @@
             <td>직업</td>
             <td>
                 <select name="occ">
-                    {{#each occList}}
-                        <option name="occOption" value="{{key}}">{{value}}</option>
-                    {{/each}}
+                        <option th:each="occ : ${occList}" name="occOption" th:value="${occ.occCode}" th:text="${occ.occName}"></option>
                 </select>
             </td>
         </tr>
@@ -72,9 +68,7 @@
             <td>직군</td>
             <td>
                 <select name="bizType">
-                    {{#each bizTypeList}}
-                        <option name="bizTypeOption" value="{{key}}">{{value}}</option>
-                    {{/each}}
+                        <option th:each="bizType : ${bizTypeList}" name="bizTypeOption" th:value="${bizType.bizTypeCode}" th:text="${bizType.bizType}"></option>
                 </select>
             </td>
         </tr>
@@ -82,9 +76,7 @@
             <td>신급</td>
             <td>
                 <select name="religionType">
-                    {{#each religionTypeList}}
-                        <option name="religionTypeOption" value="{{key}}">{{value}}</option>
-                    {{/each}}
+                    <option th:each="religionType : ${religionTypeList}" name="religionTypeOption" th:value="${religionType.religionTypeCode}" th:text="${religionType.religionType}"></option>
                 </select>
             </td>
         </tr>

@@ -44,6 +44,6 @@
         <a th:href="@{youthSearch(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
     </span>
 </div>
-<div th:unless="${found}">청년 목록을 불러올 수 없습니다.</div>
+<div th:unless="${size > 0}">청년 목록을 불러올 수 없습니다.</div>
 </body>
 </html>

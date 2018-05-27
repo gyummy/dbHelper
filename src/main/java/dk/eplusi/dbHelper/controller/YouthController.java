@@ -254,7 +254,6 @@ public class YouthController {
         Optional<Youth> result = youthRepository.findById(youthId);
         model.addAttribute("found", result.isPresent());
         if(result.isPresent()) {
-            //TODO occType, occ, bizType, religionType 객체 null인 경우 처리 필요
             Youth youth = result.get();
 //            addYouthDetailToModel(youth, model);
             model.addAttribute("youth", youth);

@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <td>성별</td>
-            <td><input type="radio" name="gender" title="genderMaleInput" value="M" th:checked="*{isMale}">남 <input type="radio" name="gender" title="genderMaleInput" value="F" th:checked="*{!isMale}">여</td>
+            <td><input type="radio" name="gender" title="genderMaleInput" value="M" th:checked="*{gender} == 'M'">남 <input type="radio" name="gender" title="genderFemaleInput" value="F" th:checked="*{gender} == 'F'">여</td>
         </tr>
         <tr>
             <td>생년월일</td>
@@ -39,11 +39,11 @@
         </tr>
         <tr>
             <td>모태신앙여부</td>
-            <td><input type="radio" name="isBornChr" title="isBornChrInput" value="1" th:checked="*{isBornChr}">예 <input type="radio" name="isBornChr" title="isBornChrInput" value="0" th:checked="*{!isBornChr}">아니오</td>
+            <td><input type="radio" name="isBornChr" title="isBornChrInput" value="1" th:checked="*{isBornChr == 1}">예 <input type="radio" name="isBornChr" title="isBornChrInput" value="0" th:checked="*{isBornChr == 0}">아니오</td>
         </tr>
         <tr>
             <td>자진등록여부</td>
-            <td><input type="radio" name="isSelfIn" title="isSelfInInput" value="1" th:checked="*{isSelfIn}">예 <input type="radio" name="isSelfIn" title="isSelfInInput" value="0"  th:checked="*{!isSelfIn}">아니오</td>
+            <td><input type="radio" name="isSelfIn" title="isSelfInInput" value="1" th:checked="*{isSelfIn == 1}">예 <input type="radio" name="isSelfIn" title="isSelfInInput" value="0" th:checked="*{isSelfIn == 0}">아니오</td>
         </tr>
         <tr>
             <td>인도자 성명</td>
@@ -87,11 +87,11 @@
         </tr>
         <tr>
             <td>출석 상태</td>
-            <td><input type="radio" name="isAttending" title="isAttendingInput" value="1" th:checked="*{isAttending}">예 <input type="radio" name="isAttending" title="isAttendingInput" value="0" th:checked="*{!isAttending}">아니오</td>
+            <td><input type="radio" name="isAttending" title="isAttendingInput" value="1" th:checked="*{isAttending == 1}">예 <input type="radio" name="isAttending" title="isAttendingInput" value="0" th:checked="*{isAttending == 0}">아니오</td>
         </tr>
         <tr>
             <td>등록 여부</td>
-            <td><input type="radio" name="isRegistered" title="isRegisteredInput" value="1" th:checked="*{isRegistered}">예 <input type="radio" name="isRegistered" title="isRegisteredInput" value="0" th:checked="*{!isRegistered}">아니오</td>
+            <td><input type="radio" name="isRegistered" title="isRegisteredInput" value="1" th:checked="*{isRegistered == 1}">예 <input type="radio" name="isRegistered" title="isRegisteredInput" value="0" th:checked="*{isRegistered == 0}">아니오</td>
         </tr>
     </table>
     <input type="hidden" name="youthId" th:value="${youth.youthId}">

@@ -22,8 +22,8 @@
         </tr>
         <tr>
             <td>성별</td>
-            <td th:if="*{gender} == 'M'" th:text="남"></td>
-            <td th:if="*{gender} == 'F'" th:text="여"></td>
+            <td th:if="*{gender.toString().equals('M')}" th:text="남"></td>
+            <td th:if="*{gender.toString().equals('F')}" th:text="여"></td>
         </tr>
         <tr>
             <td>생년월일</td>
@@ -49,18 +49,18 @@
         </tr>
         <tr>
             <td>인도자 성명</td>
-            <td th:if="*{guideName != null}" th:text="*{guideName}"></td>
-            <td th:unless="*{guideName != null}">(정보 없음)</td>
+            <td th:if="*{guideName!= null}" th:text="*{guideName}"></td>
+            <td th:unless="*{guideName!= null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>직업 상태</td>
-            <td th:if="*{occType != null}" th:text="*{occType.occType}"></td>
-            <td th:unless="*{occType != null}">(정보 없음)</td>
+            <td th:if="*{occType!= null}" th:text="*{occType.occType}"></td>
+            <td th:unless="*{occType!= null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>직업</td>
-            <td th:if="*{occ != null}" th:text="*{occ.occName}"></td>
-            <td th:unless="*{occ != null}">(정보 없음)</td>
+            <td th:if="*{occ!= null}" th:text="*{occ.occName}"></td>
+            <td th:unless="*{occ!= null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>직군</td>
@@ -69,8 +69,8 @@
         </tr>
         <tr>
             <td>신급</td>
-            <td th:if="*{religionType != null}" th:text="*{religionType.religionType}"></td>
-            <td th:unless="*{religionType != null}">(정보 없음)</td>
+            <td th:if="*{religionType!= null}" th:text="*{religionType.religionType}"></td>
+            <td th:unless="*{religionType!= null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>교회 등록 날짜</td>

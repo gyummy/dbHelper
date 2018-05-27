@@ -7,7 +7,7 @@
 <a href="main">처음으로</a>
 <hr>
 <div th:if="${size > 0}">
-    전체 개수: <span th:text="${size}"></span>
+    검색 결과 개수: <span th:text="${size}"></span>
     <form id="deleteYouthForm" action="youthDeleteResult" method="post">
         <table border="1" cellpadding="1">
             <tbody>
@@ -34,6 +34,7 @@
         <input type="submit" name="insertSubmit" value="청년 추가">
     </form>
     <form id="searchYouthForm" method="post" action="youthSearch">
+        검색 기준:
         <select name="target">
             <option th:each="keyword : ${keywordMap}" th:value="${keyword.key}" th:text="${keyword.value}"></option>
         </select>

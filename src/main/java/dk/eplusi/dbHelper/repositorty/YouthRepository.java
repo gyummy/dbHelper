@@ -1,5 +1,6 @@
 package dk.eplusi.dbHelper.repositorty;
 
+import dk.eplusi.dbHelper.model.code.ReligionType;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,4 +16,7 @@ public interface YouthRepository extends JpaRepository<Youth, Integer> {
 
     List<Youth> findByCellPhone(String cellPhone);
     Page<Youth> findByCellPhone(String cellPhone, Pageable pageable);
+
+    List<Youth> findByReligionType(ReligionType religionType);
+    Page<Youth> findByReligionType(ReligionType religionType, Pageable pageable);
 }

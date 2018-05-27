@@ -2,12 +2,14 @@ package dk.eplusi.dbHelper.controller;
 
 import dk.eplusi.dbHelper.common.DateUtility;
 import dk.eplusi.dbHelper.model.code.OccType;
+import dk.eplusi.dbHelper.model.code.ReligionType;
 import dk.eplusi.dbHelper.repositorty.*;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Gyummy on 2017-08-10.
@@ -30,19 +33,20 @@ import java.util.*;
 public class YouthController {
     private static final Logger LOGGER = LoggerFactory.getLogger(YouthController.class);
 
-    private static final Map<String, String> keywordMap = new HashMap<>();
+    private static final Map<String, String> keywordMap = new LinkedHashMap<>();
     static {
-        keywordMap.put("youth_name", "청년 이름");
-        keywordMap.put("youth_peer", "청년 또래");
-        keywordMap.put("cell_phone", "핸드폰 번호");
+        keywordMap.put("youthName", "청년 이름");
+        keywordMap.put("youthPeer", "청년 또래");
+        keywordMap.put("cellPhone", "핸드폰 번호");
+        keywordMap.put("religionType", "신급");
     }
 
-    private String convertIntToMsg(Integer value) {
-        if(value == null)
-            return "";
-
-        return value == 0 ? "아니오" : "예";
-    }
+//    private String convertIntToMsg(Integer value) {
+//        if(value == null)
+//            return "";
+//
+//        return value == 0 ? "아니오" : "예";
+//    }
 
 //    private Model addYouthDetailToModel(Youth youth, Model model) {
 //        model.addAttribute("youthId", youth.getYouthId());
@@ -255,43 +259,64 @@ public class YouthController {
         model.addAttribute("found", result.isPresent());
         if(result.isPresent()) {
             Youth youth = result.get();
-//            addYouthDetailToModel(youth, model);
             model.addAttribute("youth", youth);
         }
         return "youth/youthDetail";
     }
+
+    private String oldTarget = null;
+    private String oldKeyword = null;
 
     @GetMapping(value = "/youthSearch")
     public String youthSearchGet(HttpServletRequest request, Model model, Pageable pageable) throws Exception {
         return youthSearchPost(request, model, pageable);
     }
 
+    //TODO 검색 불완전.. 검색 결과에 대한 pagination 구현 필요
     @PostMapping(value = "/youthSearch")
     public String youthSearchPost(HttpServletRequest request, Model model, @PageableDefault(size = 20) Pageable pageable) throws Exception {
-        Page<Youth> result;
+        Page<Youth> result = null;
         String target = request.getParameter("target");
         String keyword = request.getParameter("keyword");
-        if(target != null && !target.isEmpty() && keyword != null && !keyword.isEmpty()) {
+        if(target == null && keyword == null) {
+            target = oldTarget;
+            keyword = oldKeyword;
+        }
+        if (target != null && !target.isEmpty() && keyword != null && !keyword.isEmpty()) {
+            oldTarget = target;
+            oldKeyword = keyword;
+
             switch (target) {
-                case "youth_name":
+                case "youthName":
                     result = youthRepository.findByYouthName(keyword, pageable);
                     break;
-                case "youth_peer":
+                case "youthPeer":
                     result = youthRepository.findByYouthPeer(keyword, pageable);
                     break;
-                case "cell_phone":
+                case "cellPhone":
                     result = youthRepository.findByCellPhone(keyword, pageable);
                     break;
-                default:
-                    result = youthRepository.findAll(pageable);
+                case "religionType":
+                    List<ReligionType> searchedReligionTypeList = religionTypeRepository.findByReligionType(keyword);
+                    if(!searchedReligionTypeList.isEmpty())
+                        result = youthRepository.findByReligionType(searchedReligionTypeList.get(0), pageable);
                     break;
             }
-        } else {
-            result = youthRepository.findAll(pageable);
         }
+
+        if(result == null)
+            result = youthRepository.findAll(pageable);
+
         model.addAttribute("size", result.getTotalElements());
         model.addAttribute("youths", result.getContent());
         model.addAttribute("keywordMap", keywordMap);
+//        List<ReligionType> religionTypeListForSearch = new ArrayList<>();
+//        ReligionType noSelectedReligionType = new ReligionType();
+//        noSelectedReligionType.setReligionTypeCode(-1);
+//        noSelectedReligionType.setReligionType("선택 안 함");
+//        religionTypeListForSearch.add(noSelectedReligionType);
+//        religionTypeListForSearch.addAll(religionTypeRepository.findAll());
+//        model.addAttribute("religionTypeList", religionTypeListForSearch);
 
         List<Integer> pageNumbers = new ArrayList<>();
         for(int i = 0; i < result.getTotalPages(); i++)

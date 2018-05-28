@@ -33,16 +33,16 @@
     <form method="post" action="youthInsert">
         <input type="submit" name="insertSubmit" value="청년 추가">
     </form>
-    <form id="searchYouthForm" method="post" action="youthSearch">
+    <form id="searchYouthForm" method="get" action="youthSearch">
         검색 기준:
         <select name="target">
-            <option th:each="keyword : ${keywordMap}" th:value="${keyword.key}" th:text="${keyword.value}"></option>
+            <option th:each="keywordElement : ${keywordMap}" th:value="${keywordElement.key}" th:text="${keywordElement.value}"></option>
         </select>
         <input type="text" name="keyword">
-        <input type="submit" name="submit" value="검색">
+        <button type="submit">검색</button>
     </form>
     <span th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{youthSearch(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+        <a th:href="@{youthSearch(target=${target}, keyword=${keyword}, page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
     </span>
 </div>
 <div th:unless="${size > 0}">청년 목록을 불러올 수 없습니다.</div>

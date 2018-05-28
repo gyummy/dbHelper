@@ -1,7 +1,6 @@
 package dk.eplusi.dbHelper.controller;
 
 import dk.eplusi.dbHelper.common.DateUtility;
-import dk.eplusi.dbHelper.model.code.OccType;
 import dk.eplusi.dbHelper.model.code.ReligionType;
 import dk.eplusi.dbHelper.repositorty.*;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
@@ -9,21 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by Gyummy on 2017-08-10.
@@ -272,20 +266,14 @@ public class YouthController {
         return youthSearchPost(request, model, pageable);
     }
 
-    //TODO 검색 불완전.. 검색 결과에 대한 pagination 구현 필요
     @PostMapping(value = "/youthSearch")
     public String youthSearchPost(HttpServletRequest request, Model model, @PageableDefault(size = 20) Pageable pageable) throws Exception {
         Page<Youth> result = null;
         String target = request.getParameter("target");
         String keyword = request.getParameter("keyword");
-        if(target == null && keyword == null) {
-            target = oldTarget;
-            keyword = oldKeyword;
-        }
+        model.addAttribute("target", target);
+        model.addAttribute("keyword", keyword);
         if (target != null && !target.isEmpty() && keyword != null && !keyword.isEmpty()) {
-            oldTarget = target;
-            oldKeyword = keyword;
-
             switch (target) {
                 case "youthName":
                     result = youthRepository.findByYouthName(keyword, pageable);
@@ -310,13 +298,6 @@ public class YouthController {
         model.addAttribute("size", result.getTotalElements());
         model.addAttribute("youths", result.getContent());
         model.addAttribute("keywordMap", keywordMap);
-//        List<ReligionType> religionTypeListForSearch = new ArrayList<>();
-//        ReligionType noSelectedReligionType = new ReligionType();
-//        noSelectedReligionType.setReligionTypeCode(-1);
-//        noSelectedReligionType.setReligionType("선택 안 함");
-//        religionTypeListForSearch.add(noSelectedReligionType);
-//        religionTypeListForSearch.addAll(religionTypeRepository.findAll());
-//        model.addAttribute("religionTypeList", religionTypeListForSearch);
 
         List<Integer> pageNumbers = new ArrayList<>();
         for(int i = 0; i < result.getTotalPages(); i++)

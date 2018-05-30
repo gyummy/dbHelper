@@ -6,8 +6,6 @@ package dk.eplusi.dbHelper.common;
  */
 public class Const {
     public static final String CATALOG_NAME_EPLUSI = "eplusi";
-    public static final String CATALOG_NAME_COMMON = "common";
-    public static final String CATALOG_NAME_CODE = "code";
     //code
     public static final String TABLE_NAME_BIZ_TYPE = "biz_type";
     public static final String TABLE_NAME_BIZ_TYPE_KEYWORD = "biz_type_keyword";

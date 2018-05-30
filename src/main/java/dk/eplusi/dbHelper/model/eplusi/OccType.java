@@ -1,4 +1,4 @@
-package dk.eplusi.dbHelper.model.code;
+package dk.eplusi.dbHelper.model.eplusi;
 
 import dk.eplusi.dbHelper.common.Const;
 
@@ -9,7 +9,7 @@ import javax.persistence.*;
  *
  */
 @Entity(name = Const.TABLE_NAME_OCC_TYPE)
-@Table(name = Const.TABLE_NAME_OCC_TYPE, catalog = Const.CATALOG_NAME_CODE)
+@Table(name = Const.TABLE_NAME_OCC_TYPE, catalog = Const.CATALOG_NAME_EPLUSI)
 public class OccType {
 
     @Id

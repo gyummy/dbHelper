@@ -1,6 +1,6 @@
 package dk.eplusi.dbHelper.repositorty;
 
-import dk.eplusi.dbHelper.model.code.ReligionType;
+import dk.eplusi.dbHelper.model.eplusi.ReligionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

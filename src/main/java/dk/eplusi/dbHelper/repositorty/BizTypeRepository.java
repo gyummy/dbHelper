@@ -1,6 +1,6 @@
 package dk.eplusi.dbHelper.repositorty;
 
-import dk.eplusi.dbHelper.model.code.BizType;
+import dk.eplusi.dbHelper.model.eplusi.BizType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

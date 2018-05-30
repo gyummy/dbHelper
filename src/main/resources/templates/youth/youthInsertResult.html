@@ -23,7 +23,9 @@
         </tr>
         <tr>
             <td>성별</td>
-            <td th:text="*{gender}"></td>
+            <td th:if="*{gender == null}">정보 없음</td>
+            <td th:if="*{gender != null && gender.toString().equals('M')}" th:text="남"></td>
+            <td th:if="*{gender != null && gender.toString().equals('F')}" th:text="여"></td>
         </tr>
         <tr>
             <td>생년월일</td>
@@ -39,31 +41,38 @@
         </tr>
         <tr>
             <td>모태신앙여부</td>
-            <td th:text="*{isBornChr}"></td>
+            <td th:if="*{isBornChr == 1}" th:text="예"></td>
+            <td th:if="*{isBornChr == 0}" th:text="아니오"></td>
         </tr>
         <tr>
             <td>자진등록여부</td>
-            <td th:text="*{isSelfIn}"></td>
+            <td th:if="*{isSelfIn == 1}" th:text="예"></td>
+            <td th:if="*{isSelfIn == 0}" th:text="아니오"></td>
         </tr>
         <tr>
             <td>인도자 성명</td>
-            <td th:text="*{guideName}"></td>
+            <td th:if="*{guideName!= null}" th:text="*{guideName}"></td>
+            <td th:unless="*{guideName!= null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>직업 상태</td>
-            <td th:text="*{occType}"></td>
+            <td th:if="*{occType!= null}" th:text="*{occType.occType}"></td>
+            <td th:unless="*{occType!= null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>직업</td>
-            <td th:text="*{occ}"></td>
+            <td th:if="*{occ!= null}" th:text="*{occ.occName}"></td>
+            <td th:unless="*{occ!= null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>직군</td>
-            <td th:text="*{bizType}"></td>
+            <td th:if="*{bizType != null}" th:text="*{bizType.bizType}"></td>
+            <td th:unless="*{bizType != null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>신급</td>
-            <td th:text="*{religionType}"></td>
+            <td th:if="*{religionType!= null}" th:text="*{religionType.religionType}"></td>
+            <td th:unless="*{religionType!= null}">(정보 없음)</td>
         </tr>
         <tr>
             <td>교회 등록 날짜</td>
@@ -71,11 +80,13 @@
         </tr>
         <tr>
             <td>출석 상태</td>
-            <td th:text="*{isAttending}"></td>
+            <td th:if="*{isAttending == 1}" th:text="예"></td>
+            <td th:if="*{isAttending == 0}" th:text="아니오"></td>
         </tr>
         <tr>
             <td>등록 여부</td>
-            <td th:text="*{isRegistered}"></td>
+            <td th:if="*{isRegistered == 1}" th:text="예"></td>
+            <td th:if="*{isRegistered == 0}" th:text="아니오"></td>
         </tr>
     </table>
     <form method="post" action="youthModify">

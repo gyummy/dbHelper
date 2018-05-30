@@ -1,4 +1,4 @@
-package dk.eplusi.dbHelper.model.common;
+package dk.eplusi.dbHelper.model.eplusi;
 
 import dk.eplusi.dbHelper.common.Const;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  *
  */
 @Entity
-@Table(name = Const.TABLE_NAME_ORGANIZATION, catalog = Const.CATALOG_NAME_COMMON)
+@Table(name = Const.TABLE_NAME_ORGANIZATION, catalog = Const.CATALOG_NAME_EPLUSI)
 public class Organization {
 
     @Id

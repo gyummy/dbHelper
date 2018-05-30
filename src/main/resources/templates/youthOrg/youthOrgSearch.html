@@ -1,0 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DK E+I - DB Helper</title>
+</head>
+<body>
+<h3>청년 - 검색</h3>
+<a href="main">처음으로</a>
+<hr>
+<div th:if="${size > 0}">
+    검색 결과 개수: <span th:text="${size}"></span>
+    <form id="deleteYouthOrgForm" action="youthOrgDeleteResult" method="post">
+        <table border="1" cellpadding="1">
+            <tbody>
+            <tr>
+                <td>삭제</td>
+                <td><b>청년 이름</b></td>
+                <td><b>청년 또래</b></td>
+                <td><b>조직</b></td>
+                <td><b>직분</b></td>
+                <td><b>시작 일자</b></td>
+                <td><b>종료 일자</b></td>
+            </tr>
+                <tr th:each="youthOrg : ${youthOrgList}">
+                    <td><input type="checkbox" name="youthOrgId" th:value="${youthOrg.youthOrgId}"></td>
+                    <td><a th:href="@{youthDetail(youthId=${youthOrg.youth.youthId})}" th:text="${youthOrg.youth.youthName}"></a></td>
+                    <td th:text="${youthOrg.youth.youthPeer}"></td>
+                    <td th:text="${youthOrg.organization.orgName}"></td>
+                    <td th:text="${youthOrg.roleType.roleName}"></td>
+                    <td th:text="${youthOrg.startDate}"></td>
+                    <td th:text="${youthOrg.endDate}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" name="deleteSubmit" value="선택 항목 삭제">
+    </form>
+    <form method="post" action="youthOrgDeleteAllResult">
+        <input type="submit" name="deleteAllSubmit" value="모두 삭제">
+    </form>
+    <form method="post" action="youthOrgInsert">
+        <input type="submit" name="insertSubmit" value="청년 추가">
+    </form>
+    <form id="searchYouthOrgForm" method="get" action="youthOrgSearch">
+        검색 기준:
+        <select name="target">
+            <option th:each="keywordElement : ${keywordMap}" th:value="${keywordElement.key}" th:text="${keywordElement.value}"></option>
+        </select>
+        <input type="text" name="keyword">
+        <button type="submit">검색</button>
+    </form>
+    <span th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{youthOrgSearch(target=${target}, keyword=${keyword}, page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+    </span>
+</div>
+<div th:unless="${size > 0}">청년 소속 정보 목록을 불러올 수 없습니다.</div>
+</body>
+</html>

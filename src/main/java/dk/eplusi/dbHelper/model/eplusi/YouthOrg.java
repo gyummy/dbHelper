@@ -1,8 +1,6 @@
 package dk.eplusi.dbHelper.model.eplusi;
 
 import dk.eplusi.dbHelper.common.Const;
-import dk.eplusi.dbHelper.model.code.RoleType;
-import dk.eplusi.dbHelper.model.common.Organization;
 
 import javax.persistence.*;
 import java.util.Date;

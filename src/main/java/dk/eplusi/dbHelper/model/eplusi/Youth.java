@@ -1,10 +1,6 @@
 package dk.eplusi.dbHelper.model.eplusi;
 
 import dk.eplusi.dbHelper.common.Const;
-import dk.eplusi.dbHelper.model.code.BizType;
-import dk.eplusi.dbHelper.model.code.Occ;
-import dk.eplusi.dbHelper.model.code.OccType;
-import dk.eplusi.dbHelper.model.code.ReligionType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -60,10 +56,10 @@ public class Youth {
     @Column(name = "is_registered")
     private Integer isRegistered;
     @Temporal(TemporalType.DATE)
-    @Column(name = "update_time")
+    @Column(name = "updated_date")
     private Date updateTime;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "create_time", insertable = false)
+    @Column(name = "created_date", insertable = false)
     private Date createTime;
 
     public Youth() {
@@ -97,10 +93,6 @@ public class Youth {
         return gender;
     }
 
-//    public String getGender() {
-//        return gender == 'M' ? "남" : "여";
-//    }
-
     public void setGender(Character gender) {
         this.gender = gender;
     }
@@ -129,11 +121,6 @@ public class Youth {
         this.homeAddress = homeAddress;
     }
 
-//    public String getIsBornChr() {
-//        return isBornChr == 1 ? "예" : "아니오";
-//    }
-
-
     public Integer getIsBornChr() {
         return isBornChr;
     }
@@ -145,10 +132,6 @@ public class Youth {
     public Integer getIsSelfIn() {
         return isSelfIn;
     }
-
-    //    public String getIsSelfIn() {
-//        return isSelfIn == 1 ? "예" : "아니오";
-//    }
 
     public void setIsSelfIn(Integer isSelfIn) {
         this.isSelfIn = isSelfIn;
@@ -202,10 +185,6 @@ public class Youth {
         this.churchRegDate = churchRegDate;
     }
 
-//    public String getIsAttending() {
-//        return isAttending == 1 ? "예" : "아니오";
-//    }
-
     public Integer getIsAttending() {
         return isAttending;
     }
@@ -213,11 +192,6 @@ public class Youth {
     public void setIsAttending(Integer isAttending) {
         this.isAttending = isAttending;
     }
-
-//    public String getIsRegistered() {
-//        return isRegistered == 1 ? "예" : "아니오";
-//    }
-
 
     public Integer getIsRegistered() {
         return isRegistered;

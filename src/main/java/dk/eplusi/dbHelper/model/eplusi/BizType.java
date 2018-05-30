@@ -1,4 +1,4 @@
-package dk.eplusi.dbHelper.model.code;
+package dk.eplusi.dbHelper.model.eplusi;
 
 import dk.eplusi.dbHelper.common.Const;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  *
  */
 @Entity(name = Const.TABLE_NAME_BIZ_TYPE)
-@Table(name = Const.TABLE_NAME_BIZ_TYPE, catalog = Const.CATALOG_NAME_CODE)
+@Table(name = Const.TABLE_NAME_BIZ_TYPE, catalog = Const.CATALOG_NAME_EPLUSI)
 public class BizType {
 
     @Id
@@ -19,12 +19,12 @@ public class BizType {
     private Integer bizTypeCode;
     @Column(name = "biz_type")
     private String bizType;
-    @Column(name = "update_time")
+    @Column(name = "updated_date")
     @Temporal(TemporalType.DATE)
-    private Date updateTime;
-    @Column(name = "create_time")
+    private Date updatedDate;
+    @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+    private Date createdDate;
 
     public BizType() {
     }
@@ -45,20 +45,20 @@ public class BizType {
         this.bizType = bizType;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getUpdatedDate() {
+        return updatedDate;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     @Override

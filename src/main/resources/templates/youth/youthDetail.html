@@ -22,8 +22,9 @@
         </tr>
         <tr>
             <td>성별</td>
-            <td th:if="*{gender.toString().equals('M')}" th:text="남"></td>
-            <td th:if="*{gender.toString().equals('F')}" th:text="여"></td>
+            <td th:if="*{gender == null}">정보 없음</td>
+            <td th:if="*{gender != null && gender.toString().equals('M')}" th:text="남"></td>
+            <td th:if="*{gender != null && gender.toString().equals('F')}" th:text="여"></td>
         </tr>
         <tr>
             <td>생년월일</td>

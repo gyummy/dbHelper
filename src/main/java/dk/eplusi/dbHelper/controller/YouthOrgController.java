@@ -24,52 +24,30 @@ import java.util.*;
 @Controller
 public class YouthOrgController {
 
-    private Youth setYouthOrgInformation (YouthOrg youthOrg, HttpServletRequest request) throws ParseException {
+    private YouthOrg setYouthOrgInformation (YouthOrg youthOrg, HttpServletRequest request) throws ParseException {
+        Youth youth = null;
         String youthId = request.getParameter("youthId");
         if(youthId != null) {
             Optional<Youth> result = youthRepository.findById(Integer.valueOf(youthId));
-            if(result.isPresent()) {
-                youthOrg.setYouth(result.get());
-
-                youthOrg.setRoleType(roleTypeRepository.getOne(Integer.valueOf(request.getParameter("roleTypeCode"))));
-                youthOrg.setOrganization(organizationRepository.getOne(Integer.valueOf(request.getParameter("organizationCode"))));
+            if(result.isPresent())
+                youth = result.get();
+        } else {
+            String youthName = request.getParameter("youthName");
+            String youthPeer = request.getParameter("youthPeer");
+            if(youthName != null && !youthName.isEmpty() && youthPeer != null && !youthPeer.isEmpty()) {
+                List<Youth> youths = youthRepository.findByYouthNameAndYouthPeer(youthName, youthPeer);
+                if(youths != null && !youths.isEmpty())
+                    youth = youths.get(0);
             }
-
         }
 
+        if(youth != null)
+            youthOrg.setYouth(youth);
 
-        youthOrg.setYouthPeer(request.getParameter("youthPeer"));
-        youthOrg.setGender(request.getParameter("gender").charAt(0));
-        youthOrg.setBirthDate(DateUtility.parse(request.getParameter("birthDate")));
-        youthOrg.setCellPhone(request.getParameter("cellPhone"));
-        youthOrg.setHomeAddress(request.getParameter("homeAddress"));
-        String isBornChrParam = request.getParameter("isBornChr");
-        if(isBornChrParam == null)
-            youthOrg.setIsBornChr(null);
-        else
-            youthOrg.setIsBornChr(Integer.valueOf(isBornChrParam));
-        String isSelfInParam = request.getParameter("isSelfIn");
-        if(isSelfInParam == null)
-            youthOrg.setIsSelfIn(null);
-        else
-            youthOrg.setIsSelfIn(Integer.valueOf(isSelfInParam));
-        youthOrg.setGuideName(request.getParameter("guideName"));
-        youthOrg.setOccType(occTypeRepository.findById(Integer.valueOf(request.getParameter("occType"))).get());
-        youthOrg.setOcc(occRepository.findById(Integer.valueOf(request.getParameter("occ"))).get());
-        youthOrg.setBizType(bizTypeRepository.findById(Integer.valueOf(request.getParameter("bizType"))).get());
-        youthOrg.setReligionType(religionTypeRepository.findById(Integer.valueOf(request.getParameter("religionType"))).get());
-        youthOrg.setChurchRegDate(DateUtility.parse(request.getParameter("churchRegDate")));
-        String isAttendingParam = request.getParameter("isAttending");
-        if(isAttendingParam == null)
-            youthOrg.setIsSelfIn(null);
-        else
-            youthOrg.setIsSelfIn(Integer.valueOf(isAttendingParam));
-        String isRegisteredParam = request.getParameter("isRegistered");
-        if(isRegisteredParam == null)
-            youthOrg.setIsSelfIn(null);
-        else
-            youthOrg.setIsSelfIn(Integer.valueOf(isRegisteredParam));
-        youthOrg.setUpdateTime(DateUtility.getToday());
+        youthOrg.setRoleType(roleTypeRepository.getOne(Integer.valueOf(request.getParameter("roleTypeCode"))));
+        youthOrg.setOrganization(organizationRepository.getOne(Integer.valueOf(request.getParameter("organizationCode"))));
+        youthOrg.setStartDate(DateUtility.getThisYear());
+        youthOrg.setEndDate(DateUtility.getNextYear());
 
         return youthOrg;
     }
@@ -139,13 +117,15 @@ public class YouthOrgController {
         return "youthOrg/youthOrgSearch";
     }
 
-    @PostMapping(value = "youthOrgInsert")
-    public String youthOrgInsert(Model model) throws Exception {
-        model.addAttribute("occTypeList", occTypeRepository.findAll());
-        model.addAttribute("occList", occRepository.findAll());
-        model.addAttribute("bizTypeList", bizTypeRepository.findAll());
-        model.addAttribute("religionTypeList", religionTypeRepository.findAll());
+    @GetMapping(value = "youthOrgInsert")
+    public String youthOrgInsertGet(Model model) throws Exception {
+        return youthOrgInsertPost(model);
+    }
 
+    @PostMapping(value = "youthOrgInsert")
+    public String youthOrgInsertPost(Model model) throws Exception {
+        model.addAttribute("roleTypeList", roleTypeRepository.findAll());
+        model.addAttribute("orgList", organizationRepository.findByAppliedYearBetween(DateUtility.getThisYear(), DateUtility.getNextYear()));
         return "youthOrg/youthOrgInsert";
     }
 
@@ -166,7 +146,7 @@ public class YouthOrgController {
         Optional<YouthOrg> result = youthOrgRepository.findById(youthOrgId);
         if(result.isPresent()) {
             YouthOrg youthOrg = result.get();
-            model.addAttribute("youth", youthOrg);
+            model.addAttribute("youthOrg", youthOrg);
 
 //            List<Map<String, Object>> occTypeList = new ArrayList<>();
 //            occTypeRepository.findAll().forEach(occType -> {
@@ -222,7 +202,7 @@ public class YouthOrgController {
         Optional<YouthOrg> result = youthOrgRepository.findById(youthOrgId);
         if(result.isPresent()) {
             YouthOrg youthOrg = setYouthOrgInformation(result.get(), request);
-            model.addAttribute("youth", youthOrg);
+            model.addAttribute("youthOrg", youthOrg);
             YouthOrg saveResult = youthOrgRepository.save(youthOrg);
             model.addAttribute("success", youthOrg.equals(saveResult));
         }

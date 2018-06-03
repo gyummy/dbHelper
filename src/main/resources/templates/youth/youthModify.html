@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DK E+I - DB Helper</title>
+</head>
+<body>
+<h3>청년 - 상세 정보 수정</h3>
+<a href="#" onclick="location.href=document.referrer">이전 페이지로</a>
+<hr>
+<form id="youthModifyForm" action="youthModifyResult" method="post">
+    <table border="1" cellpadding="1" th:object="${youth}">
+        <tr>
+            <td><b>항목</b></td>
+            <td><b>내용</b></td>
+        </tr>
+        <tr>
+            <td>청년 이름</td>
+            <td><input type="text" name="youthName" title="youthNameInput" th:value="*{youthName}"/></td>
+        </tr>
+        <tr>
+            <td>청년 또래</td>
+            <td><input type="text" name="youthPeer" title="youthPeerInput" th:value="*{youthPeer}"/></td>
+        </tr>
+        <tr>
+            <td>성별</td>
+            <td>
+                <input type="radio" name="gender" title="genderMaleInput" value="M" th:checked="*{gender.toString().equals('M')}">남
+                <input type="radio" name="gender" title="genderFemaleInput" value="F" th:checked="*{gender.toString().equals('F')}">여
+            </td>
+        </tr>
+        <tr>
+            <td>생년월일</td>
+            <td><input type="text" name="birthDate" title="birthDateInput" th:value="*{birthDate}"></td>
+        </tr>
+        <tr>
+            <td>핸드폰 번호</td>
+            <td><input type="text" name="cellPhone" title="cellPhoneInput" th:value="*{cellPhone}"></td>
+        </tr>
+        <tr>
+            <td>자택주소</td>
+            <td><input type="text" name="homeAddress" title="homeAddressInput" th:value="*{homeAddress}"></td>
+        </tr>
+        <tr>
+            <td>모태신앙여부</td>
+            <td>
+                <input type="radio" name="isBornChr" title="isBornChrInput" value="1" th:checked="*{isBornChr == 1}">예
+                <input type="radio" name="isBornChr" title="isBornChrInput" value="0" th:checked="*{isBornChr == 0}">아니오
+            </td>
+        </tr>
+        <tr>
+            <td>자진등록여부</td>
+            <td>
+                <input type="radio" name="isSelfIn" title="isSelfInInput" value="1" th:checked="*{isSelfIn == 1}">예
+                <input type="radio" name="isSelfIn" title="isSelfInInput" value="0" th:checked="*{isSelfIn == 0}">아니오
+            </td>
+        </tr>
+        <tr>
+            <td>인도자 성명</td>
+            <td><input type="text" name="guideName" title="guideNameInput" th:value="*{guideName}"></td>
+        </tr>
+        <tr>
+            <td>직업 상태</td>
+            <td>
+                <select name="occType" title="occTypeInput">
+                    <option name="occTypeOption" th:each="occType : ${occTypeList}" th:value="${occType.get('key')}" th:selected="${occType.get('selected')}" th:text="${occType.get('value')}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>직업</td>
+            <td>
+                <select name="occ" title="occInput">
+                    <option name="occTypeOption" th:each="occ : ${occList}" th:value="${occ.get('key')}" th:selected="${occ.get('selected')}" th:text="${occ.get('value')}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>직군</td>
+            <td>
+                <select name="bizType" title="bizTypeInput">
+                    <option name="occTypeOption" th:each="bizType : ${bizTypeList}" th:value="${bizType.get('key')}" th:selected="${bizType.get('selected')}" th:text="${bizType.get('value')}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>신급</td>
+            <td>
+                <select name="religionType" title="religionTypeInput" >
+                    <option name="occTypeOption" th:each="religionType : ${religionTypeList}" th:value="${religionType.get('key')}" th:selected="${religionType.get('selected')}" th:text="${religionType.get('value')}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>교회 등록 날짜</td>
+            <td><input type="text" name="churchRegDate" title="churchRegDateInput" th:value="*{churchRegDate}"></td>
+        </tr>
+        <tr>
+            <td>출석 상태</td>
+            <td>
+                <input type="radio" name="isAttending" title="isAttendingInput" value="1" th:checked="*{isAttending == 1}">예
+                <input type="radio" name="isAttending" title="isAttendingInput" value="0" th:checked="*{isAttending == 0}">아니오
+            </td>
+        </tr>
+        <tr>
+            <td>등록 여부</td>
+            <td>
+                <input type="radio" name="isRegistered" title="isRegisteredInput" value="1" th:checked="*{isRegistered == 1}">예
+                <input type="radio" name="isRegistered" title="isRegisteredInput" value="0" th:checked="*{isRegistered == 0}">아니오
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" name="youthId" th:value="${youth.youthId}">
+    <input type="submit" value="저장">
+</form>
+</body>
+</html>

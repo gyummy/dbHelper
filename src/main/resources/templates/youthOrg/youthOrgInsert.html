@@ -23,15 +23,15 @@
         <tr>
             <td>직분</td>
             <td>
-                <select name="roleType">
-                        <option th:each="roleType : ${roleTypeList}" name="roleTypeOption" th:value="${roleType.RoleCode}" th:text="${roleType.RoleName}"></option>
+                <select name="roleCode">
+                        <option th:each="roleType : ${roleTypeList}" name="roleTypeOption" th:value="${roleType.roleCode}" th:text="${roleType.roleName}"></option>
                 </select>
             </td>
         </tr>
         <tr>
             <td>조직</td>
             <td>
-                <select name="org">
+                <select name="orgCode">
                         <option th:each="org : ${orgList}" name="orgOption" th:value="${org.orgCode}" th:text="${org.orgName}"></option>
                 </select>
             </td>

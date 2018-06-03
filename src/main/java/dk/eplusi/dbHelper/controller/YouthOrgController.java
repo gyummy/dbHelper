@@ -3,7 +3,10 @@ package dk.eplusi.dbHelper.controller;
 import dk.eplusi.dbHelper.common.DateUtility;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
 import dk.eplusi.dbHelper.model.eplusi.YouthOrg;
-import dk.eplusi.dbHelper.repositorty.*;
+import dk.eplusi.dbHelper.repositorty.OrganizationRepository;
+import dk.eplusi.dbHelper.repositorty.RoleTypeRepository;
+import dk.eplusi.dbHelper.repositorty.YouthOrgRepository;
+import dk.eplusi.dbHelper.repositorty.YouthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,8 +47,8 @@ public class YouthOrgController {
         if(youth != null)
             youthOrg.setYouth(youth);
 
-        youthOrg.setRoleType(roleTypeRepository.getOne(Integer.valueOf(request.getParameter("roleTypeCode"))));
-        youthOrg.setOrganization(organizationRepository.getOne(Integer.valueOf(request.getParameter("organizationCode"))));
+        youthOrg.setRoleType(roleTypeRepository.getOne(Integer.valueOf(request.getParameter("roleCode"))));
+        youthOrg.setOrganization(organizationRepository.getOne(Integer.valueOf(request.getParameter("orgCode"))));
         youthOrg.setStartDate(DateUtility.getThisYear());
         youthOrg.setEndDate(DateUtility.getNextYear());
 
@@ -53,24 +56,14 @@ public class YouthOrgController {
     }
 
     private final YouthRepository youthRepository;
-    private final OccTypeRepository occTypeRepository;
-    private final OccRepository occRepository;
-    private final BizTypeRepository bizTypeRepository;
-    private final ReligionTypeRepository religionTypeRepository;
     private final YouthOrgRepository youthOrgRepository;
     private final OrganizationRepository organizationRepository;
     private final RoleTypeRepository roleTypeRepository;
 
     @Autowired
-    public YouthOrgController(YouthRepository youthRepository, OccTypeRepository occTypeRepository,
-                              OccRepository occRepository, BizTypeRepository bizTypeRepository,
-                              ReligionTypeRepository religionTypeRepository, YouthOrgRepository youthOrgRepository,
+    public YouthOrgController(YouthRepository youthRepository, YouthOrgRepository youthOrgRepository,
                               OrganizationRepository organizationRepository, RoleTypeRepository roleTypeRepository) {
         this.youthRepository = youthRepository;
-        this.occTypeRepository = occTypeRepository;
-        this.occRepository = occRepository;
-        this.bizTypeRepository = bizTypeRepository;
-        this.religionTypeRepository = religionTypeRepository;
         this.youthOrgRepository = youthOrgRepository;
         this.organizationRepository = organizationRepository;
         this.roleTypeRepository = roleTypeRepository;

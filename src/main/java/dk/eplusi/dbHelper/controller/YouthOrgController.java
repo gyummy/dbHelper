@@ -49,8 +49,8 @@ public class YouthOrgController {
 
         youthOrg.setRoleType(roleTypeRepository.getOne(Integer.valueOf(request.getParameter("roleCode"))));
         youthOrg.setOrganization(organizationRepository.getOne(Integer.valueOf(request.getParameter("orgCode"))));
-        youthOrg.setStartDate(DateUtility.getThisYear());
-        youthOrg.setEndDate(DateUtility.getNextYear());
+        youthOrg.setStartDate(DateUtility.getThisYearStartDate());
+        youthOrg.setEndDate(DateUtility.getThisYearEndDate());
 
         return youthOrg;
     }

@@ -23,7 +23,7 @@ public class BizType {
     @Temporal(TemporalType.DATE)
     private Date updatedDate;
     @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date createdDate;
 
     public BizType() {

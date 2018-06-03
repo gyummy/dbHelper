@@ -16,6 +16,14 @@ public class DateUtility {
         return new SimpleDateFormat("yyyy").parse(String.valueOf(THIS_YEAR + 1));
     }
 
+    public static Date getThisYearStartDate() throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(THIS_YEAR + "-01-01");
+    }
+
+    public static Date getThisYearEndDate() throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(THIS_YEAR + "-12-31");
+    }
+
     public static Date getToday() {
         long time = System.currentTimeMillis();
         return new Date(time);

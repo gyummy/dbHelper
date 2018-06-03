@@ -60,15 +60,14 @@ public class YouthController {
         youth.setChurchRegDate(DateUtility.parse(request.getParameter("churchRegDate")));
         String isAttendingParam = request.getParameter("isAttending");
         if(isAttendingParam == null)
-            youth.setIsSelfIn(null);
+            youth.setIsAttending(null);
         else
-            youth.setIsSelfIn(Integer.valueOf(isAttendingParam));
+            youth.setIsAttending(Integer.valueOf(isAttendingParam));
         String isRegisteredParam = request.getParameter("isRegistered");
         if(isRegisteredParam == null)
-            youth.setIsSelfIn(null);
+            youth.setIsRegistered(null);
         else
-            youth.setIsSelfIn(Integer.valueOf(isRegisteredParam));
-        youth.setUpdateTime(DateUtility.getToday());
+            youth.setIsRegistered(Integer.valueOf(isRegisteredParam));
 
         return youth;
     }
@@ -236,6 +235,7 @@ public class YouthController {
         return "youth/youthSearch";
     }
 
+    //TODO 동시 제거 안 됨
     @PostMapping(value = "youthDeleteResult")
     public String youthDeleteResult(HttpServletRequest request, Model model) throws Exception {
         Integer youthId = Integer.valueOf(request.getParameter("youthId"));

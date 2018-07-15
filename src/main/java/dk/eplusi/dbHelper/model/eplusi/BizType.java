@@ -15,10 +15,11 @@ public class BizType {
 
     @Id
     @Column(name = "biz_type_code")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer bizTypeCode;
+    private String bizTypeCode;
     @Column(name = "biz_type")
     private String bizType;
+    @Column(name = "parent_code")
+    private String parentCode;
     @Column(name = "updated_date")
     @Temporal(TemporalType.DATE)
     private Date updatedDate;
@@ -29,11 +30,11 @@ public class BizType {
     public BizType() {
     }
 
-    public Integer getBizTypeCode() {
+    public String getBizTypeCode() {
         return bizTypeCode;
     }
 
-    public void setBizTypeCode(Integer bizTypeCode) {
+    public void setBizTypeCode(String bizTypeCode) {
         this.bizTypeCode = bizTypeCode;
     }
 
@@ -43,6 +44,14 @@ public class BizType {
 
     public void setBizType(String bizType) {
         this.bizType = bizType;
+    }
+
+    public String getParentCode() {
+        return parentCode;
+    }
+
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
     }
 
     public Date getUpdatedDate() {

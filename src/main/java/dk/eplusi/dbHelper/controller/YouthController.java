@@ -38,7 +38,7 @@ public class YouthController {
     private Youth setYouthInformation (Youth youth, HttpServletRequest request) throws ParseException {
         youth.setYouthName(request.getParameter("youthName"));
         youth.setYouthPeer(request.getParameter("youthPeer"));
-        youth.setGender(request.getParameter("gender").charAt(0));
+        youth.setGender(request.getParameter("gender"));
         youth.setBirthDate(DateUtility.parse(request.getParameter("birthDate")));
         youth.setCellPhone(request.getParameter("cellPhone"));
         youth.setHomeAddress(request.getParameter("homeAddress"));

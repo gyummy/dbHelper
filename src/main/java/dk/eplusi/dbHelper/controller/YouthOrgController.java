@@ -96,7 +96,7 @@ public class YouthOrgController {
             }
         }
         if(result == null)
-        result = youthOrgRepository.findAll(pageable);
+            result = youthOrgRepository.findAll(pageable);
 
         model.addAttribute("size", result.getTotalElements());
         model.addAttribute("youthOrgList", result.getContent());
@@ -118,7 +118,7 @@ public class YouthOrgController {
     @PostMapping(value = "youthOrgInsert")
     public String youthOrgInsertPost(Model model) throws Exception {
         model.addAttribute("roleTypeList", roleTypeRepository.findAll());
-        model.addAttribute("orgList", organizationRepository.findByAppliedYearBetween(DateUtility.getThisYear(), DateUtility.getNextYear()));
+        model.addAttribute("orgList", organizationRepository.findByAppliedYear(String.valueOf(DateUtility.getThisYear())));
         return "youthOrg/youthOrgInsert";
     }
 
@@ -235,5 +235,5 @@ public class YouthOrgController {
         model.addAttribute("success", true);    //TODO 실패조건?
         return "youthOrg/youthOrgDeleteAllResult";
     }
-    
+
 }

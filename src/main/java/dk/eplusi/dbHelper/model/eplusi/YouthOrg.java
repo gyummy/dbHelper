@@ -32,6 +32,12 @@ public class YouthOrg {
     @Temporal(TemporalType.DATE)
     @Column(name = "end_date")
     private Date endDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.DATE)
+    private Date updatedDate;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.DATE)
+    private Date createdDate;
 
     public YouthOrg() {
     }
@@ -82,6 +88,22 @@ public class YouthOrg {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public static String getIdColumnName() {

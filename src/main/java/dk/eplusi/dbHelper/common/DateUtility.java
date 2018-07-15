@@ -6,14 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtility {
-    private static final Integer THIS_YEAR = Calendar.getInstance().get (Calendar.YEAR);
+    private static final Integer THIS_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 
-    public static Date getThisYear() throws ParseException {
-        return new SimpleDateFormat("yyyy").parse(String.valueOf(THIS_YEAR));
-    }
-
-    public static Date getNextYear() throws ParseException {
-        return new SimpleDateFormat("yyyy").parse(String.valueOf(THIS_YEAR + 1));
+    public static Integer getThisYear() throws ParseException {
+        return THIS_YEAR;
     }
 
     public static Date getThisYearStartDate() throws ParseException {

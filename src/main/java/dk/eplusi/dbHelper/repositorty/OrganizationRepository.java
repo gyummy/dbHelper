@@ -7,5 +7,5 @@ import java.util.Date;
 import java.util.List;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
-    List<Organization> findByAppliedYearBetween(Date start, Date end);
+    List<Organization> findByAppliedYear(String appliedYear);
 }

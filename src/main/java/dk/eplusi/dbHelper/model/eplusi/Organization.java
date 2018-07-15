@@ -22,8 +22,13 @@ public class Organization {
     @Column(name = "org_name")
     private String orgName;
     @Column(name = "applied_year")
+    private String appliedYear;
+    @Column(name = "updated_date")
     @Temporal(TemporalType.DATE)
-    private Date appliedYear;
+    private Date updatedDate;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.DATE)
+    private Date createdDate;
 
     public Organization() {
     }
@@ -52,12 +57,28 @@ public class Organization {
         this.orgName = orgName;
     }
 
-    public Date getAppliedYear() {
+    public String getAppliedYear() {
         return appliedYear;
     }
 
-    public void setAppliedYear(Date appliedYear) {
+    public void setAppliedYear(String appliedYear) {
         this.appliedYear = appliedYear;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     @Override

@@ -15,8 +15,7 @@ public class Occ {
 
     @Id
     @Column(name = "occ_code")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer occCode;
+    private String occCode;
     @Column(name = "occ_name")
     private String occName;
     @Column(name = "parent_code")
@@ -25,17 +24,17 @@ public class Occ {
     @Temporal(TemporalType.DATE)
     private Date updatedDate;
     @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date createdDate;
 
     public Occ() {
     }
 
-    public Integer getOccCode() {
+    public String getOccCode() {
         return occCode;
     }
 
-    public void setOccCode(Integer occCode) {
+    public void setOccCode(String occCode) {
         this.occCode = occCode;
     }
 

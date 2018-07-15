@@ -22,7 +22,7 @@ public class Youth {
     @Column(name = "youth_peer")
     private String youthPeer;
     @Column(name = "gender")
-    private Character gender;
+    private String gender;
     @Temporal(TemporalType.DATE)
     @Column(name = "birth_date")
     private Date birthDate;
@@ -89,11 +89,11 @@ public class Youth {
         this.youthPeer = youthPeer;
     }
 
-    public Character getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Character gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

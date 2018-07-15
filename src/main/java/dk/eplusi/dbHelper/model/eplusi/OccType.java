@@ -3,6 +3,7 @@ package dk.eplusi.dbHelper.model.eplusi;
 import dk.eplusi.dbHelper.common.Const;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Gyummy on 2018-03-06.
@@ -18,6 +19,12 @@ public class OccType {
     private Integer occTypeCode;
     @Column(name = "occ_type")
     private String occType;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.DATE)
+    private Date updatedDate;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.DATE)
+    private Date createdDate;
 
     public OccType() {
     }
@@ -36,6 +43,22 @@ public class OccType {
 
     public void setOccType(String occType) {
         this.occType = occType;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     @Override

@@ -1,8 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>DK E+I - DB Helper</title>
+    <div th:replace="fragments/header::header-style">header-style</div>
 </head>
 <body>
+<div th:replace="fragments/header::header">header</div>
+<div class="container">
 <h3>청년 소속 정보 - 검색</h3>
 <a href="main">처음으로</a>
 <hr>
@@ -52,5 +55,7 @@
     </span>
 </div>
 <div th:unless="${size > 0}">청년 소속 정보 목록을 불러올 수 없습니다.</div>
+</div>
+<div th:replace="fragments/footer::footer">footer</div>
 </body>
 </html>

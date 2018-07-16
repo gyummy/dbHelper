@@ -1,101 +1,107 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>DK E+I - DB Helper</title>
+    <div th:replace="fragments/header::header-style">header-style</div>
 </head>
 <body>
-<h3>청년 - 상세 정보</h3>
-<a href="youthSearch">검색 페이지로</a>
-<hr>
-<div th:if="success">
-    청년 상세 정보 수정을 성공하였습니다.<br>
-    <table border="1" cellpadding="1" th:object="${youth}">
-        <tr>
-            <td><b>항목</b></td>
-            <td><b>내용</b></td>
-        </tr>
-        <tr>
-            <td>청년 이름</td>
-            <td th:text="*{youthName}"></td>
-        </tr>
-        <tr>
-            <td>청년 또래</td>
-            <td th:text="*{youthPeer}"></td>
-        </tr>
-        <tr>
-            <td>성별</td>
-            <td th:if="*{gender == null}">정보 없음</td>
-            <td th:if="*{gender != null && gender.toString().equals('M')}" th:text="남"></td>
-            <td th:if="*{gender != null && gender.toString().equals('F')}" th:text="여"></td>
-        </tr>
-        <tr>
-            <td>생년월일</td>
-            <td th:text="*{birthDate}"></td>
-        </tr>
-        <tr>
-            <td>핸드폰 번호</td>
-            <td th:text="*{cellPhone}"></td>
-        </tr>
-        <tr>
-            <td>자택주소</td>
-            <td th:text="*{homeAddress}"></td>
-        </tr>
-        <tr>
-            <td>모태신앙여부</td>
-            <td th:if="*{isBornChr == 1}" th:text="예"></td>
-            <td th:if="*{isBornChr == 0}" th:text="아니오"></td>
-        </tr>
-        <tr>
-            <td>자진등록여부</td>
-            <td th:if="*{isSelfIn == 1}" th:text="예"></td>
-            <td th:if="*{isSelfIn == 0}" th:text="아니오"></td>
-        </tr>
-        <tr>
-            <td>인도자 성명</td>
-            <td th:if="*{guideName!= null}" th:text="*{guideName}"></td>
-            <td th:unless="*{guideName!= null}">(정보 없음)</td>
-        </tr>
-        <tr>
-            <td>직업 상태</td>
-            <td th:if="*{occType!= null}" th:text="*{occType.occType}"></td>
-            <td th:unless="*{occType!= null}">(정보 없음)</td>
-        </tr>
-        <tr>
-            <td>직업</td>
-            <td th:if="*{occ!= null}" th:text="*{occ.occName}"></td>
-            <td th:unless="*{occ!= null}">(정보 없음)</td>
-        </tr>
-        <tr>
-            <td>직군</td>
-            <td th:if="*{bizType != null}" th:text="*{bizType.bizType}"></td>
-            <td th:unless="*{bizType != null}">(정보 없음)</td>
-        </tr>
-        <tr>
-            <td>신급</td>
-            <td th:if="*{religionType!= null}" th:text="*{religionType.religionType}"></td>
-            <td th:unless="*{religionType!= null}">(정보 없음)</td>
-        </tr>
-        <tr>
-            <td>교회 등록 날짜</td>
-            <td th:text="*{churchRegDate}"></td>
-        </tr>
-        <tr>
-            <td>출석 상태</td>
-            <td th:if="*{isAttending == 1}" th:text="예"></td>
-            <td th:if="*{isAttending == 0}" th:text="아니오"></td>
-        </tr>
-        <tr>
-            <td>등록 여부</td>
-            <td th:if="*{isRegistered == 1}" th:text="예"></td>
-            <td th:if="*{isRegistered == 0}" th:text="아니오"></td>
-        </tr>
-    </table>
-    <form method="post" action="youthModify">
-        <input type="submit" name="modifySubmit" value="상세 정보 수정">
-        <input type="hidden" name="youthId" th:value="${youth.youthId}">
-    </form>
+<div th:replace="fragments/header::header">header</div>
+<div class="container">
+    <h3>청년 - 상세 정보</h3>
+    <a href="youthSearch">검색 페이지로</a>
+    <hr>
+    <div th:if="success">
+        청년 상세 정보 수정을 성공하였습니다.<br>
+        <table class="table table-striped" th:object="${youth}">
+            <tr>
+                <td><b>항목</b></td>
+                <td><b>내용</b></td>
+            </tr>
+            <tr>
+                <td>청년 이름</td>
+                <td th:text="*{youthName}"></td>
+            </tr>
+            <tr>
+                <td>청년 또래</td>
+                <td th:text="*{youthPeer}"></td>
+            </tr>
+            <tr>
+                <td>성별</td>
+                <td th:if="*{gender == null}">정보 없음</td>
+                <td th:if="*{gender != null && gender.toString().equals('M')}" th:text="남"></td>
+                <td th:if="*{gender != null && gender.toString().equals('F')}" th:text="여"></td>
+            </tr>
+            <tr>
+                <td>생년월일</td>
+                <td th:text="*{birthDate}"></td>
+            </tr>
+            <tr>
+                <td>핸드폰 번호</td>
+                <td th:text="*{cellPhone}"></td>
+            </tr>
+            <tr>
+                <td>자택주소</td>
+                <td th:text="*{homeAddress}"></td>
+            </tr>
+            <tr>
+                <td>모태신앙여부</td>
+                <td th:if="*{isBornChr == 1}" th:text="예"></td>
+                <td th:if="*{isBornChr == 0}" th:text="아니오"></td>
+            </tr>
+            <tr>
+                <td>자진등록여부</td>
+                <td th:if="*{isSelfIn == 1}" th:text="예"></td>
+                <td th:if="*{isSelfIn == 0}" th:text="아니오"></td>
+            </tr>
+            <tr>
+                <td>인도자 성명</td>
+                <td th:if="*{guideName!= null}" th:text="*{guideName}"></td>
+                <td th:unless="*{guideName!= null}">(정보 없음)</td>
+            </tr>
+            <tr>
+                <td>직업 상태</td>
+                <td th:if="*{occType!= null}" th:text="*{occType.occType}"></td>
+                <td th:unless="*{occType!= null}">(정보 없음)</td>
+            </tr>
+            <tr>
+                <td>직업</td>
+                <td th:if="*{occ!= null}" th:text="*{occ.occName}"></td>
+                <td th:unless="*{occ!= null}">(정보 없음)</td>
+            </tr>
+            <tr>
+                <td>직군</td>
+                <td th:if="*{bizType != null}" th:text="*{bizType.bizType}"></td>
+                <td th:unless="*{bizType != null}">(정보 없음)</td>
+            </tr>
+            <tr>
+                <td>신급</td>
+                <td th:if="*{religionType!= null}" th:text="*{religionType.religionType}"></td>
+                <td th:unless="*{religionType!= null}">(정보 없음)</td>
+            </tr>
+            <tr>
+                <td>교회 등록 날짜</td>
+                <td th:text="*{churchRegDate}"></td>
+            </tr>
+            <tr>
+                <td>출석 상태</td>
+                <td th:if="*{isAttending == 1}" th:text="예"></td>
+                <td th:if="*{isAttending == 0}" th:text="아니오"></td>
+            </tr>
+            <tr>
+                <td>등록 여부</td>
+                <td th:if="*{isRegistered == 1}" th:text="예"></td>
+                <td th:if="*{isRegistered == 0}" th:text="아니오"></td>
+            </tr>
+        </table>
+        <form method="post" action="youthModify">
+            <input type="submit" name="modifySubmit" value="상세 정보 수정">
+            <input type="hidden" name="youthId" th:value="${youth.youthId}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </form>
+    </div>
+    <div th:unless="success">
+        청년 상세 정보 수정을 실패하였습니다.<br>
+    </div>
 </div>
-<div th:unless="success">
-    청년 상세 정보 수정을 실패하였습니다.<br>
-</div>
+<div th:replace="fragments/footer::footer">footer</div>
 </body>
 </html>

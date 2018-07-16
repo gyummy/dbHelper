@@ -1,8 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>DK E+I - DB Helper</title>
+    <div th:replace="fragments/header::header-style">header-style</div>
 </head>
 <body>
+<div th:replace="fragments/header::header">header</div>
+<div class="container">
 <h3>청년 소속 정보 - 입력</h3>
 <a href="youthOrgSearch">검색 페이지로</a>
 <hr>
@@ -39,5 +42,7 @@
     </table>
     <input type="submit" value="저장">
 </form>
+</div>
+<div th:replace="fragments/footer::footer">footer</div>
 </body>
 </html>

@@ -3,7 +3,10 @@ package dk.eplusi.dbHelper.controller;
 import dk.eplusi.dbHelper.common.DateUtility;
 import dk.eplusi.dbHelper.model.eplusi.Youth;
 import dk.eplusi.dbHelper.model.eplusi.YouthOrg;
-import dk.eplusi.dbHelper.repositorty.*;
+import dk.eplusi.dbHelper.repositorty.OrganizationRepository;
+import dk.eplusi.dbHelper.repositorty.RoleTypeRepository;
+import dk.eplusi.dbHelper.repositorty.YouthOrgRepository;
+import dk.eplusi.dbHelper.repositorty.YouthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,40 +28,42 @@ import java.util.*;
 public class YouthOrgController {
 
     private YouthOrg setYouthOrgInformation (YouthOrg youthOrg, HttpServletRequest request) throws ParseException {
+        Youth youth = null;
         String youthId = request.getParameter("youthId");
         if(youthId != null) {
             Optional<Youth> result = youthRepository.findById(Integer.valueOf(youthId));
-            if(result.isPresent()) {
-                youthOrg.setYouth(result.get());
-
-                youthOrg.setRoleType(roleTypeRepository.getOne(Integer.valueOf(request.getParameter("roleTypeCode"))));
-                youthOrg.setOrganization(organizationRepository.getOne(Integer.valueOf(request.getParameter("organizationCode"))));
+            if(result.isPresent())
+                youth = result.get();
+        } else {
+            String youthName = request.getParameter("youthName");
+            String youthPeer = request.getParameter("youthPeer");
+            if(youthName != null && !youthName.isEmpty() && youthPeer != null && !youthPeer.isEmpty()) {
+                List<Youth> youths = youthRepository.findByYouthNameAndYouthPeer(youthName, youthPeer);
+                if(youths != null && !youths.isEmpty())
+                    youth = youths.get(0);
             }
-
         }
+
+        if(youth != null)
+            youthOrg.setYouth(youth);
+
+        youthOrg.setRoleType(roleTypeRepository.getOne(Integer.valueOf(request.getParameter("roleCode"))));
+        youthOrg.setOrganization(organizationRepository.getOne(Integer.valueOf(request.getParameter("orgCode"))));
+        youthOrg.setStartDate(DateUtility.getThisYear());
+        youthOrg.setEndDate(DateUtility.getNextYear());
 
         return youthOrg;
     }
 
     private final YouthRepository youthRepository;
-    private final OccTypeRepository occTypeRepository;
-    private final OccRepository occRepository;
-    private final BizTypeRepository bizTypeRepository;
-    private final ReligionTypeRepository religionTypeRepository;
     private final YouthOrgRepository youthOrgRepository;
     private final OrganizationRepository organizationRepository;
     private final RoleTypeRepository roleTypeRepository;
 
     @Autowired
-    public YouthOrgController(YouthRepository youthRepository, OccTypeRepository occTypeRepository,
-                              OccRepository occRepository, BizTypeRepository bizTypeRepository,
-                              ReligionTypeRepository religionTypeRepository, YouthOrgRepository youthOrgRepository,
+    public YouthOrgController(YouthRepository youthRepository, YouthOrgRepository youthOrgRepository,
                               OrganizationRepository organizationRepository, RoleTypeRepository roleTypeRepository) {
         this.youthRepository = youthRepository;
-        this.occTypeRepository = occTypeRepository;
-        this.occRepository = occRepository;
-        this.bizTypeRepository = bizTypeRepository;
-        this.religionTypeRepository = religionTypeRepository;
         this.youthOrgRepository = youthOrgRepository;
         this.organizationRepository = organizationRepository;
         this.roleTypeRepository = roleTypeRepository;
@@ -105,13 +110,15 @@ public class YouthOrgController {
         return "youthOrg/youthOrgSearch";
     }
 
-    @PostMapping(value = "youthOrgInsert")
-    public String youthOrgInsert(Model model) throws Exception {
-        model.addAttribute("occTypeList", occTypeRepository.findAll());
-        model.addAttribute("occList", occRepository.findAll());
-        model.addAttribute("bizTypeList", bizTypeRepository.findAll());
-        model.addAttribute("religionTypeList", religionTypeRepository.findAll());
+    @GetMapping(value = "youthOrgInsert")
+    public String youthOrgInsertGet(Model model) throws Exception {
+        return youthOrgInsertPost(model);
+    }
 
+    @PostMapping(value = "youthOrgInsert")
+    public String youthOrgInsertPost(Model model) throws Exception {
+        model.addAttribute("roleTypeList", roleTypeRepository.findAll());
+        model.addAttribute("orgList", organizationRepository.findByAppliedYearBetween(DateUtility.getThisYear(), DateUtility.getNextYear()));
         return "youthOrg/youthOrgInsert";
     }
 
@@ -188,7 +195,7 @@ public class YouthOrgController {
         Optional<YouthOrg> result = youthOrgRepository.findById(youthOrgId);
         if(result.isPresent()) {
             YouthOrg youthOrg = setYouthOrgInformation(result.get(), request);
-            model.addAttribute("youth", youthOrg);
+            model.addAttribute("youthOrg", youthOrg);
             YouthOrg saveResult = youthOrgRepository.save(youthOrg);
             model.addAttribute("success", youthOrg.equals(saveResult));
         }
@@ -228,5 +235,5 @@ public class YouthOrgController {
         model.addAttribute("success", true);    //TODO 실패조건?
         return "youthOrg/youthOrgDeleteAllResult";
     }
-
+    
 }

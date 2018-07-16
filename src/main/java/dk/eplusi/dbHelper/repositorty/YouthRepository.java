@@ -20,4 +20,6 @@ public interface YouthRepository extends JpaRepository<Youth, Integer> {
 
     List<Youth> findByReligionType(ReligionType religionType);
     Page<Youth> findByReligionType(ReligionType religionType, Pageable pageable);
+
+    List<Youth> findByYouthNameAndYouthPeer(String youthName, String youthPeer);
 }

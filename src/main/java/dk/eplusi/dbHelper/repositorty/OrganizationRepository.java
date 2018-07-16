@@ -3,6 +3,9 @@ package dk.eplusi.dbHelper.repositorty;
 import dk.eplusi.dbHelper.model.eplusi.Organization;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
+import java.util.Date;
+import java.util.List;
 
+public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
+    List<Organization> findByAppliedYearBetween(Date start, Date end);
 }

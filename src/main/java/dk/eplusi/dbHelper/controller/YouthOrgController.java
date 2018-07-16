@@ -24,7 +24,7 @@ import java.util.*;
 @Controller
 public class YouthOrgController {
 
-    private Youth setYouthOrgInformation (YouthOrg youthOrg, HttpServletRequest request) throws ParseException {
+    private YouthOrg setYouthOrgInformation (YouthOrg youthOrg, HttpServletRequest request) throws ParseException {
         String youthId = request.getParameter("youthId");
         if(youthId != null) {
             Optional<Youth> result = youthRepository.findById(Integer.valueOf(youthId));
@@ -36,40 +36,6 @@ public class YouthOrgController {
             }
 
         }
-
-
-        youthOrg.setYouthPeer(request.getParameter("youthPeer"));
-        youthOrg.setGender(request.getParameter("gender").charAt(0));
-        youthOrg.setBirthDate(DateUtility.parse(request.getParameter("birthDate")));
-        youthOrg.setCellPhone(request.getParameter("cellPhone"));
-        youthOrg.setHomeAddress(request.getParameter("homeAddress"));
-        String isBornChrParam = request.getParameter("isBornChr");
-        if(isBornChrParam == null)
-            youthOrg.setIsBornChr(null);
-        else
-            youthOrg.setIsBornChr(Integer.valueOf(isBornChrParam));
-        String isSelfInParam = request.getParameter("isSelfIn");
-        if(isSelfInParam == null)
-            youthOrg.setIsSelfIn(null);
-        else
-            youthOrg.setIsSelfIn(Integer.valueOf(isSelfInParam));
-        youthOrg.setGuideName(request.getParameter("guideName"));
-        youthOrg.setOccType(occTypeRepository.findById(Integer.valueOf(request.getParameter("occType"))).get());
-        youthOrg.setOcc(occRepository.findById(Integer.valueOf(request.getParameter("occ"))).get());
-        youthOrg.setBizType(bizTypeRepository.findById(Integer.valueOf(request.getParameter("bizType"))).get());
-        youthOrg.setReligionType(religionTypeRepository.findById(Integer.valueOf(request.getParameter("religionType"))).get());
-        youthOrg.setChurchRegDate(DateUtility.parse(request.getParameter("churchRegDate")));
-        String isAttendingParam = request.getParameter("isAttending");
-        if(isAttendingParam == null)
-            youthOrg.setIsSelfIn(null);
-        else
-            youthOrg.setIsSelfIn(Integer.valueOf(isAttendingParam));
-        String isRegisteredParam = request.getParameter("isRegistered");
-        if(isRegisteredParam == null)
-            youthOrg.setIsSelfIn(null);
-        else
-            youthOrg.setIsSelfIn(Integer.valueOf(isRegisteredParam));
-        youthOrg.setUpdateTime(DateUtility.getToday());
 
         return youthOrg;
     }
@@ -166,7 +132,7 @@ public class YouthOrgController {
         Optional<YouthOrg> result = youthOrgRepository.findById(youthOrgId);
         if(result.isPresent()) {
             YouthOrg youthOrg = result.get();
-            model.addAttribute("youth", youthOrg);
+            model.addAttribute("youthOrg", youthOrg);
 
 //            List<Map<String, Object>> occTypeList = new ArrayList<>();
 //            occTypeRepository.findAll().forEach(occType -> {
@@ -262,5 +228,5 @@ public class YouthOrgController {
         model.addAttribute("success", true);    //TODO 실패조건?
         return "youthOrg/youthOrgDeleteAllResult";
     }
-    
+
 }

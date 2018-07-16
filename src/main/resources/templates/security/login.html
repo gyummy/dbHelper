@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sparrow DAST Test App</title>
+    <div th:replace="fragments/header::header-style">header-style</div>
+</head>
+<body>
+
+<div th:replace="fragments/header::header">header</div>
+
+<div class="container">
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <form th:action="@{/login}" method="post">
+                <fieldset>
+                    <h1>안녕하세요! :)</h1>
+                    <h4>계속하려면 로그인이 필요합니다.</h4>
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">
+                            사용자명 또는 비밀번호가 올바르지 않습니다.
+                        </div>
+                    </div>
+                    <div th:if="${param.logout}">
+                        <div class="alert alert-info">
+                            로그아웃 되었습니다.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="username" id="username" class="form-control input-lg"
+                               placeholder="사용자명" required="true" autofocus="true"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-control input-lg"
+                               placeholder="비밀번호" required="true" autocomplete="false"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="로그인"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                        </div>
+                    </div>
+                </fieldset>
+                <br>
+                <br>
+                <br>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
+    </div>
+    <h4>아래 계정으로 동광교회 청년부 교적 관리 어플리케이션을 이용할 수 있습니다.</h4>
+    <br>
+    <table class="table table-striped" style="width:400px;">
+        <thead>
+        <tr class="warning"><th>계정</th><th>사용자명</th><th>비밀번호</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>사용자</td><td>user</td><td>user</td></tr>
+        <tr><td>관리자</td><td>admin</td><td>admin</td></tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="fragments/footer::footer">footer</div>
+</body>
+</html>

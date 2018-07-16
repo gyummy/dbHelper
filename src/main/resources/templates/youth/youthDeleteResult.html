@@ -1,12 +1,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>DK E+I - DB Helper</title>
+    <div th:replace="fragments/header::header-style">header-style</div>
 </head>
 <body>
-<h3>청년 - 삭제</h3>
-<a href="youthSearch">검색 페이지로</a>
-<hr>
-<p th:if="${success}" th:text="${name} + ' 청년 상세 정보 삭제를 성공하였습니다.'"></p>
-<p th:unless="${success}" th:text="해당 청년 상세 정보 삭제를 실패하였습니다. 해당 청년 정보를 찾을 수 없습니다."></p>
+<div th:replace="fragments/header::header">header</div>
+<div class="container">
+    <h3>청년 - 삭제</h3>
+    <a href="youthSearch">검색 페이지로</a>
+    <hr>
+    <p th:if="${success}" th:text="${name} + ' 청년 상세 정보 삭제를 성공하였습니다.'"></p>
+    <p th:unless="${success}" th:text="해당 청년 상세 정보 삭제를 실패하였습니다. 해당 청년 정보를 찾을 수 없습니다."></p>
+</div>
+<div th:replace="fragments/footer::footer">footer</div>
 </body>
 </html>

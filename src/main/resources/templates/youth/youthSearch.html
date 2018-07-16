@@ -1,50 +1,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>DK E+I - DB Helper</title>
+    <div th:replace="fragments/header::header-style">header-style</div>
 </head>
 <body>
-<h3>청년 - 검색</h3>
-<a href="main">처음으로</a>
-<hr>
-<div th:if="${size > 0}">
-    검색 결과 개수: <span th:text="${size}"></span>
-    <form id="deleteYouthForm" action="youthDeleteResult" method="post">
-        <table border="1" cellpadding="1">
-            <tbody>
-            <tr>
-                <td>삭제</td>
-                <td><b>청년 이름</b></td>
-                <td><b>청년 또래</b></td>
-                <td><b>휴대전화번호</b></td>
-            </tr>
+<div th:replace="fragments/header::header">header</div>
+<div class="container">
+    <h3>청년 - 검색</h3>
+    <a href="main">처음으로</a>
+    <hr>
+    <div th:if="${size > 0}">
+        검색 결과 개수: <span th:text="${size}"></span>
+        <form id="deleteYouthForm" action="youthDeleteResult" method="post">
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>삭제</td>
+                    <td><b>청년 이름</b></td>
+                    <td><b>청년 또래</b></td>
+                    <td><b>휴대전화번호</b></td>
+                </tr>
                 <tr th:each="youth : ${youths}">
                     <td><input type="checkbox" name="youthId" th:value="${youth.youthId}"></td>
                     <td><a th:href="@{youthDetail(youthId=${youth.youthId})}" th:text="${youth.youthName}"></a></td>
                     <td th:text="${youth.youthPeer}"></td>
                     <td th:text="${youth.cellPhone}"></td>
                 </tr>
-            </tbody>
-        </table>
-        <input type="submit" name="deleteSubmit" value="선택 항목 삭제">
-    </form>
-    <form method="post" action="youthDeleteAllResult">
-        <input type="submit" name="deleteSubmit" value="모두 삭제">
-    </form>
-    <form method="post" action="youthInsert">
-        <input type="submit" name="insertSubmit" value="청년 추가">
-    </form>
-    <form id="searchYouthForm" method="get" action="youthSearch">
-        검색 기준:
-        <select name="target">
-            <option th:each="keywordElement : ${keywordMap}" th:value="${keywordElement.key}" th:text="${keywordElement.value}"></option>
-        </select>
-        <input type="text" name="keyword">
-        <button type="submit">검색</button>
-    </form>
-    <span th:each="pageNumber : ${pageNumbers}">
+                </tbody>
+            </table>
+            <input type="submit" name="deleteSubmit" value="선택 항목 삭제">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </form>
+        <form method="post" action="youthDeleteAllResult">
+            <input type="submit" name="deleteSubmit" value="모두 삭제">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </form>
+        <form method="post" action="youthInsert">
+            <input type="submit" name="insertSubmit" value="청년 추가">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </form>
+        <form id="searchYouthForm" method="get" action="youthSearch">
+            검색 기준:
+            <select name="target">
+                <option th:each="keywordElement : ${keywordMap}" th:value="${keywordElement.key}" th:text="${keywordElement.value}"></option>
+            </select>
+            <input type="text" name="keyword">
+            <button type="submit">검색</button>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </form>
+        <span th:each="pageNumber : ${pageNumbers}">
         <a th:href="@{youthSearch(target=${target}, keyword=${keyword}, page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
     </span>
+    </div>
+    <div th:unless="${size > 0}">청년 목록을 불러올 수 없습니다.</div>
 </div>
-<div th:unless="${size > 0}">청년 목록을 불러올 수 없습니다.</div>
+
+<div th:replace="fragments/footer::footer">footer</div>
 </body>
 </html>
